@@ -159,9 +159,8 @@ export default function Chat() {
       ? [{ _id: "pending", role: "user" as const, content: pendingUser }]
       : []),
   ];
-  const lastAssistantId = messages
-    ?.filter((m) => m.role === "assistant")
-    .at(-1)?._id;
+  const assistants = messages?.filter((m) => m.role === "assistant") ?? [];
+  const lastAssistantId = assistants[assistants.length - 1]?._id;
 
   const handleCopy = async (id: string, content: string) => {
     const ok = await copyText(content);

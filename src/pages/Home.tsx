@@ -3,35 +3,39 @@ import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Markdown, stripMarkdown } from "@/components/elvix/Markdown";
+import { ToolCard } from "@/components/elvix/ToolCard";
+import { stripMarkdown } from "@/components/elvix/Markdown";
 import { ElvixMark } from "@/components/elvix/Logo";
+import { CATEGORY_META, toolByPath } from "@/lib/tools";
+import type { ToolCategory } from "@/lib/tools";
 import {
-  Bot,
-  GraduationCap,
+  FileText,
   History as HistoryIcon,
-  Image as ImageIcon,
+  ImagePlus,
   Sparkles,
-  Wand2,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 
-const SUBJECTS = ["Physics", "Chemistry", "Mathematics", "Biology", "English", "General"];
-
-const COMING_SOON = [
-  "Notes Maker",
-  "PDF Summarizer",
-  "Study Planner",
-  "Shorts Script",
-  "Hook Generator",
-  "Translator",
+const POPULAR = [
+  "doubt-solver",
+  "notes-maker",
+  "pdf-summarizer",
+  "shorts-script",
+  "hook-generator",
+  "study-planner",
 ];
+
+const CATEGORIES: ToolCategory[] = ["study", "creator", "ai", "utilities"];
 
 export default function Home() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [ask, setAsk] = useState("");
   const recent = useQuery(api.data.listHistory, { limit: 3 });
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [uploadedName, setUploadedName] = useState<string | null>(null);
 
   const handleAsk = () => {
     const text = ask.trim();
@@ -42,6 +46,26 @@ export default function Home() {
       // ignore
     }
     navigate("/app/chat");
+  };
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    const isPdf =
+      f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
+    if (isPdf) {
+      navigate("/app/pdf-summarizer");
+      return;
+    }
+    if (f.type.startsWith("image/")) {
+      setUploadedName(f.name);
+      toast.info(
+        "Image ke andar ka text AI ko nahi dikhta abhi — question chat mein type karein.",
+      );
+      navigate("/app/chat");
+      return;
+    }
+    toast.error("Sirf PDF ya image file support hoti hai.");
   };
 
   const firstName = user?.name?.split(" ")[0];
@@ -83,10 +107,35 @@ export default function Home() {
           className="min-h-24 resize-none border-0 bg-transparent p-0 text-base shadow-none focus-visible:ring-0"
           aria-label="Apna question likhein"
         />
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <span className="hidden text-xs text-muted-foreground sm:block">
-            Shift + Enter = nayi line
-          </span>
+        <div className="mt-3 flex items-center gap-2">
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*,application/pdf"
+            className="hidden"
+            onChange={handleFile}
+            aria-hidden
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="gap-1.5 rounded-full"
+            onClick={() => fileRef.current?.click()}
+          >
+            <ImagePlus className="size-4" />
+            Upload Image
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="gap-1.5 rounded-full"
+            onClick={() => navigate("/app/pdf-summarizer")}
+          >
+            <FileText className="size-4" />
+            Upload PDF
+          </Button>
           <Button
             onClick={handleAsk}
             disabled={!ask.trim()}
@@ -96,80 +145,44 @@ export default function Home() {
             Ask AI
           </Button>
         </div>
-      </section>
-
-      {/* Subject shortcuts */}
-      <section aria-label="Doubt solver shortcuts">
-        <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-          Subject se doubt poochein
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {SUBJECTS.map((s) => (
-            <Button
-              key={s}
-              variant="secondary"
-              size="sm"
-              className="rounded-full"
-              onClick={() => navigate(`/app/doubt-solver?subject=${encodeURIComponent(s)}`)}
-            >
-              <GraduationCap className="size-3.5" />
-              {s}
-            </Button>
-          ))}
-        </div>
+        {uploadedName && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            📎 {uploadedName} — chat mein question ke saath mention karein.
+          </p>
+        )}
       </section>
 
       {/* Popular tools */}
       <section aria-label="Popular tools">
         <h2 className="mb-3 font-display text-lg font-semibold">Popular Tools</h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          <Link
-            to="/app/chat"
-            className="group rounded-2xl border border-border/70 bg-card/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
-          >
-            <div className="mb-2.5 flex size-10 items-center justify-center rounded-xl bg-primary/12 text-primary">
-              <Bot className="size-5" />
-            </div>
-            <p className="font-semibold">ELVIX AI Chat</p>
-            <p className="mt-0.5 text-sm text-muted-foreground">
-              Kisi bhi sawaal ka jawab — padhai ya general, sab kuch.
-            </p>
-            <span className="mt-2 inline-block text-xs font-medium text-primary group-hover:underline">
-              Chat kholein →
-            </span>
-          </Link>
-
-          <Link
-            to="/app/doubt-solver"
-            className="group rounded-2xl border border-border/70 bg-card/70 p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
-          >
-            <div className="mb-2.5 flex size-10 items-center justify-center rounded-xl bg-violet-500/15 text-violet-500 dark:text-violet-400">
-              <GraduationCap className="size-5" />
-            </div>
-            <p className="font-semibold">AI Doubt Solver</p>
-            <p className="mt-0.5 text-sm text-muted-foreground">
-              Step-by-step solution + exam-ready answer, subject ke hisaab se.
-            </p>
-            <span className="mt-2 inline-block text-xs font-medium text-primary group-hover:underline">
-              Solve karein →
-            </span>
-          </Link>
+          {POPULAR.map((id) => {
+            const tool = toolByPath(`/app/${id}`);
+            return tool ? <ToolCard key={id} tool={tool} /> : null;
+          })}
         </div>
       </section>
 
-      {/* Coming soon (honest, non-interactive) */}
-      <section aria-label="Coming soon tools">
-        <p className="mb-2 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-          Coming soon
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {COMING_SOON.map((name) => (
-            <span
-              key={name}
-              className="rounded-full border border-dashed border-border px-3 py-1 text-xs text-muted-foreground"
+      {/* Explore categories */}
+      <section aria-label="Explore ELVIX">
+        <h2 className="mb-3 font-display text-lg font-semibold">Explore ELVIX</h2>
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {CATEGORIES.map((cat) => (
+            <Link
+              key={cat}
+              to={`/app/${cat === "ai" ? "tools" : cat}`}
+              className="group rounded-2xl border border-border/70 bg-card/70 p-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
             >
-              {name} · jald hi
-            </span>
+              <span className="block text-2xl" aria-hidden>
+                {CATEGORY_META[cat].emoji}
+              </span>
+              <span className="mt-1.5 block text-sm font-semibold">
+                {CATEGORY_META[cat].label}
+              </span>
+              <span className="mt-0.5 block text-[11px] leading-snug text-muted-foreground">
+                {CATEGORY_META[cat].blurb}
+              </span>
+            </Link>
           ))}
         </div>
       </section>
@@ -200,8 +213,6 @@ export default function Home() {
                     {stripMarkdown(item.preview)}
                   </p>
                 </div>
-                <Wand2 className="hidden" aria-hidden />
-                <ImageIcon className="hidden" aria-hidden />
                 <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                   {item.toolName}
                 </span>
@@ -211,10 +222,6 @@ export default function Home() {
         </section>
       )}
 
-      {/* Preview of rendered markdown to warm up the module (hidden) */}
-      <div className="hidden">
-        <Markdown content="" />
-      </div>
     </div>
   );
 }

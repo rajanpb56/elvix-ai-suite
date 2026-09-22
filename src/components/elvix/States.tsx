@@ -57,9 +57,21 @@ export function ErrorState({
   );
 }
 
-export function AiThinking({ label = "ELVIX AI soch raha hai…" }: { label?: string }) {
+export function AiThinking({
+  label = "ELVIX AI soch raha hai…",
+  className,
+}: {
+  label?: string;
+  className?: string;
+}) {
   return (
-    <div className="flex items-center gap-2.5 text-sm text-muted-foreground" role="status">
+    <div
+      className={cn(
+        "flex items-center gap-2.5 text-sm text-muted-foreground",
+        className,
+      )}
+      role="status"
+    >
       <Loader2 className="size-4 animate-spin text-primary" />
       <span>{label}</span>
       <span className="flex gap-1">

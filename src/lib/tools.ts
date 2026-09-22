@@ -132,3 +132,7 @@ export const CATEGORY_META: Record<
 export function toolByPath(path: string): ToolDef | undefined {
   return TOOLS.find((t) => t.path === path);
 }
+
+export function toolById(id: string): ToolDef | undefined {
+  return TOOLS.find((t) => t.id === id);
+}

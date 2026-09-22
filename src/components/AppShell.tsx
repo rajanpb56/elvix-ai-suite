@@ -1,47 +1,93 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { api } from "@/convex/_generated/api";
 import { ElvixLogo } from "@/components/elvix/Logo";
 import { Button } from "@/components/ui/button";
 import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Bot,
+  Clapperboard,
   GraduationCap,
   History as HistoryIcon,
   House,
   LogOut,
+  Menu,
   Settings as SettingsIcon,
   Sparkles,
   User,
+  Wrench,
 } from "lucide-react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const NAV = [
   { to: "/app", label: "Home", icon: House, end: true },
   { to: "/app/chat", label: "AI Chat", icon: Sparkles },
-  { to: "/app/doubt-solver", label: "Doubt Solver", icon: GraduationCap },
+  { to: "/app/tools", label: "AI Tools", icon: Bot },
+  { to: "/app/study", label: "Study", icon: GraduationCap },
+  { to: "/app/creator", label: "Creator", icon: Clapperboard },
+  { to: "/app/utilities", label: "Utilities", icon: Wrench },
   { to: "/app/history", label: "History", icon: HistoryIcon },
   { to: "/app/profile", label: "Profile", icon: User },
   { to: "/app/settings", label: "Settings", icon: SettingsIcon },
 ];
 
-const BOTTOM_NAV = NAV.filter((n) =>
-  ["/app", "/app/chat", "/app/history", "/app/profile"].includes(n.to),
-);
+const BOTTOM_NAV = [
+  { to: "/app", label: "Home", icon: House, end: true },
+  { to: "/app/chat", label: "AI Tools", icon: Sparkles },
+  { to: "/app/history", label: "History", icon: HistoryIcon, end: false },
+  { to: "/app/profile", label: "Profile", icon: User, end: false },
+];
 
 const TITLES: Record<string, string> = {
   "/app": "Home",
   "/app/chat": "ELVIX AI",
-  "/app/doubt-solver": "Doubt Solver",
+  "/app/tools": "AI Tools",
+  "/app/study": "Study Hub",
+  "/app/creator": "Creator Hub",
+  "/app/utilities": "Utilities",
   "/app/history": "History",
   "/app/profile": "Profile",
   "/app/settings": "Settings",
 };
+
+function NavItems({ onNavigate }: { onNavigate?: () => void }) {
+  return (
+    <>
+      {NAV.map(({ to, label, icon: Icon, end }) => (
+        <NavLink
+          key={to}
+          to={to}
+          end={end}
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors ${
+              isActive
+                ? "bg-primary/12 text-primary"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+            }`
+          }
+        >
+          <Icon className="size-5" />
+          {label}
+        </NavLink>
+      ))}
+    </>
+  );
+}
 
 export function AppShell() {
   const isMobile = useIsMobile();
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -61,28 +107,12 @@ export function AppShell() {
           <ElvixLogo tagline />
         </NavLink>
 
-        <nav className="flex flex-1 flex-col gap-1" aria-label="Main">
-          {NAV.map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={({ isActive }) =>
-                `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors ${
-                  isActive
-                    ? "bg-primary/12 text-primary"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                }`
-              }
-            >
-              <Icon className="size-5" />
-              {label}
-            </NavLink>
-          ))}
+        <nav className="scrollbar-thin flex flex-1 flex-col gap-1 overflow-y-auto" aria-label="Main">
+          <NavItems />
         </nav>
 
         <div className="mt-4 flex items-center gap-2.5 rounded-2xl border border-border/70 bg-card/60 p-3">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-gradient text-sm font-bold text-white">
+          <div className="bg-brand-gradient flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
             {(user?.name?.[0] ?? "?").toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
@@ -108,9 +138,33 @@ export function AppShell() {
       {/* Mobile header */}
       {isMobile && (
         <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border/60 bg-background/85 px-4 py-3 backdrop-blur-xl">
-          <NavLink to="/app" aria-label="ELVIX Home">
-            <ElvixLogo />
-          </NavLink>
+          <div className="flex items-center gap-2">
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-9"
+                  aria-label="Menu kholein"
+                >
+                  <Menu className="size-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72 px-3 py-5">
+                <SheetHeader className="px-1">
+                  <SheetTitle>
+                    <ElvixLogo tagline />
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="mt-2 flex flex-col gap-1" aria-label="Sidebar">
+                  <NavItems onNavigate={() => setMenuOpen(false)} />
+                </nav>
+              </SheetContent>
+            </Sheet>
+            <NavLink to="/app" aria-label="ELVIX Home">
+              <ElvixLogo />
+            </NavLink>
+          </div>
           <span className="text-sm font-semibold text-muted-foreground">
             {title}
           </span>
