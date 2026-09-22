@@ -86,7 +86,11 @@ export async function runAI(
     ]);
 
     if (!result || !result.success) {
-      const friendly = friendlyError(result?.error || "unknown provider error");
+      const raw = result?.error || "unknown provider error";
+      // Server-side log only (no secrets) so provider failures are diagnosable
+      // from Convex logs instead of surfacing as opaque client errors.
+      console.error(`[ELVIX AI] provider error (${request.model}): ${raw.slice(0, 300)}`);
+      const friendly = friendlyError(raw);
       return { ok: false, ...friendly };
     }
 
@@ -107,6 +111,7 @@ export async function runAI(
     };
   } catch (error) {
     const raw = error instanceof Error ? error.message : String(error);
+    console.error(`[ELVIX AI] request threw (${request.model}): ${raw.slice(0, 300)}`);
     const friendly = friendlyError(raw);
     return { ok: false, ...friendly };
   }
