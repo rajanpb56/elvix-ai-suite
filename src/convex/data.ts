@@ -1,8 +1,96 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
+import {
+  internalMutation,
+  internalQuery,
+  mutation,
+  query,
+} from "./_generated/server";
 
-// ---------------------------------------------------------------- chats
+// ---------------------------------------------------------------- usage logs
+
+/** Internal usage-log write (called from Node AI actions, never throws). */
+export const logUsageInternal = internalMutation({
+  args: {
+    userId: v.id("users"),
+    tool: v.string(),
+    model: v.optional(v.string()),
+    promptTokens: v.optional(v.number()),
+    completionTokens: v.optional(v.number()),
+    ok: v.boolean(),
+    errorKind: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("usageLogs", { ...args, createdAt: Date.now() });
+  },
+});
+
+// ---------------------------------------------------------------- chats (internal, for AI actions)
+
+export const internalEnsureChat = internalMutation({
+  args: {
+    userId: v.id("users"),
+    chatId: v.optional(v.id("chats")),
+    title: v.string(),
+  },
+  handler: async (ctx, { userId, chatId, title }) => {
+    if (chatId) {
+      const chat = await ctx.db.get(chatId);
+      if (!chat || chat.userId !== userId) throw new Error("Chat not found");
+      return chatId;
+    }
+    return await ctx.db.insert("chats", {
+      userId,
+      title: title.slice(0, 60) || "New chat",
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+export const internalRecentMessages = internalQuery({
+  args: { chatId: v.id("chats"), limit: v.number() },
+  handler: async (ctx, { chatId, limit }) => {
+    const rows = await ctx.db
+      .query("messages")
+      .withIndex("by_chat", (q) => q.eq("chatId", chatId))
+      .order("desc")
+      .take(limit);
+    return rows.reverse().map((m) => ({
+      role: m.role as "user" | "assistant",
+      content: m.content,
+    }));
+  },
+});
+
+export const internalSaveExchange = internalMutation({
+  args: {
+    userId: v.id("users"),
+    chatId: v.id("chats"),
+    userContent: v.string(),
+    assistantContent: v.string(),
+    model: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat || chat.userId !== args.userId) throw new Error("Chat not found");
+    await ctx.db.insert("messages", {
+      chatId: args.chatId,
+      userId: args.userId,
+      role: "user",
+      content: args.userContent,
+    });
+    await ctx.db.insert("messages", {
+      chatId: args.chatId,
+      userId: args.userId,
+      role: "assistant",
+      content: args.assistantContent,
+      model: args.model,
+    });
+    await ctx.db.patch(args.chatId, { updatedAt: Date.now() });
+  },
+});
+
+// ---------------------------------------------------------------- chats (public)
 
 export const listChats = query({
   args: {},
@@ -26,15 +114,11 @@ export const listMessages = query({
     if (!chat || chat.userId !== userId) return [];
     return ctx.db
       .query("messages")
-      .withIndex("by_chat_order", (q) => eqChat(q, chatId))
+      .withIndex("by_chat", (q) => q.eq("chatId", chatId))
       .order("asc")
       .collect();
   },
 });
-
-function eqChat(q: any, chatId: any) {
-  return q.eq("chatId", chatId);
-}
 
 export const renameChat = mutation({
   args: { chatId: v.id("chats"), title: v.string() },
@@ -44,7 +128,9 @@ export const renameChat = mutation({
     if (!userId || !chat || chat.userId !== userId) {
       throw new Error("Chat not found");
     }
-    await ctx.db.patch(chatId, { title: title.trim().slice(0, 80) || chat.title });
+    await ctx.db.patch(chatId, {
+      title: title.trim().slice(0, 80) || chat.title,
+    });
   },
 });
 
@@ -58,7 +144,7 @@ export const deleteChat = mutation({
     }
     for (const m of await ctx.db
       .query("messages")
-      .withIndex("by_chat_order", (q) => q.eq("chatId", chatId))
+      .withIndex("by_chat", (q) => q.eq("chatId", chatId))
       .collect()) {
       await ctx.db.delete(m._id);
     }
@@ -164,19 +250,6 @@ export const clearHistory = mutation({
   },
 });
 
-// ---------------------------------------------------------------- profile
-
-export const updateProfile = mutation({
-  args: { name: v.string() },
-  handler: async (ctx, { name }) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Sign in required");
-    const clean = name.trim().slice(0, 60);
-    if (!clean) throw new Error("Naam khaali nahi ho sakta");
-    await ctx.db.patch(userId, { name: clean });
-  },
-});
-
 export const clearMyChats = mutation({
   args: {},
   handler: async (ctx) => {
@@ -188,11 +261,24 @@ export const clearMyChats = mutation({
       .collect()) {
       for (const m of await ctx.db
         .query("messages")
-        .withIndex("by_chat_order", (q) => q.eq("chatId", chat._id))
+        .withIndex("by_chat", (q) => q.eq("chatId", chat._id))
         .collect()) {
         await ctx.db.delete(m._id);
       }
       await ctx.db.delete(chat._id);
     }
+  },
+});
+
+// ---------------------------------------------------------------- profile
+
+export const updateProfile = mutation({
+  args: { name: v.string() },
+  handler: async (ctx, { name }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Sign in required");
+    const clean = name.trim().slice(0, 60);
+    if (!clean) throw new Error("Naam khaali nahi ho sakta");
+    await ctx.db.patch(userId, { name: clean });
   },
 });

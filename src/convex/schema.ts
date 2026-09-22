@@ -45,7 +45,7 @@ const schema = defineSchema(
       content: v.string(),
       // which AI model produced an assistant message
       model: v.optional(v.string()),
-    }).index("by_chat_order", ["chatId", "creationTime"]),
+    }).index("by_chat", ["chatId"]),
 
     // Saved results from AI tools (doubt solver etc.)
     historyItems: defineTable({
