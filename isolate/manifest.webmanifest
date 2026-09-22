@@ -1,0 +1,25 @@
+{
+  "name": "ELVIX — Soch Se Solution Tak",
+  "short_name": "ELVIX",
+  "description": "AI chat aur doubt solver — students ke liye, ek hi jagah.",
+  "id": "/",
+  "start_url": "/app",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#070b18",
+  "theme_color": "#070b18",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
