@@ -139,8 +139,10 @@ export default function Chat() {
   }, [messages?.length, pendingUser, regenerating]);
 
   // Handoff from Home: auto-send the question typed there
-  const sendRef = useRef(send);
-  sendRef.current = send;
+  const sendRef = useRef<(text: string) => void>(() => {});
+  useEffect(() => {
+    sendRef.current = send;
+  }, [send]);
   useEffect(() => {
     try {
       const ask = sessionStorage.getItem("elvix:ask");

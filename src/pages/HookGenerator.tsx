@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AI_CONFIG_MESSAGE } from "@/components/elvix/States";
-import { Lightbulb, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";

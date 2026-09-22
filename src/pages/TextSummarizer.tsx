@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { AI_CONFIG_MESSAGE } from "@/components/elvix/States";
-import { FileText, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";

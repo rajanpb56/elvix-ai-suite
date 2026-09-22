@@ -2,9 +2,7 @@ import { api } from "@/convex/_generated/api";
 import { ElvixMark } from "@/components/elvix/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
-import { toolByPath } from "@/lib/tools";
 import {
   Bot,
   Check,
@@ -13,7 +11,7 @@ import {
   Pencil,
   Wrench,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { Link } from "react-router";
 import { toast } from "sonner";
@@ -26,9 +24,12 @@ export default function Profile() {
   const history = useQuery(api.data.listHistory, { limit: 1000 });
   const updateProfile = useMutation(api.data.updateProfile);
 
-  useEffect(() => {
-    if (user?.name) setName(user.name);
-  }, [user?.name]);
+  // Adjust state during render when the source of truth (user.name) changes.
+  const [prevUserName, setPrevUserName] = useState<string | null>(null);
+  if (user?.name !== prevUserName) {
+    setPrevUserName(user?.name ?? null);
+    setName(user?.name ?? "");
+  }
 
   const handleSave = async () => {
     if (!name.trim()) {
