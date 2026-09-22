@@ -90,6 +90,64 @@ export const internalSaveExchange = internalMutation({
   },
 });
 
+export const internalSaveAssistant = internalMutation({
+  args: {
+    userId: v.id("users"),
+    chatId: v.id("chats"),
+    assistantContent: v.string(),
+    model: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat || chat.userId !== args.userId) throw new Error("Chat not found");
+    await ctx.db.insert("messages", {
+      chatId: args.chatId,
+      userId: args.userId,
+      role: "assistant",
+      content: args.assistantContent,
+      model: args.model,
+    });
+    await ctx.db.patch(args.chatId, { updatedAt: Date.now() });
+  },
+});
+
+export const internalResetTrailingAssistant = internalMutation({
+  args: {
+    chatId: v.id("chats"),
+    userId: v.id("users"),
+  },
+  handler: async (ctx, { chatId, userId }) => {
+    const chat = await ctx.db.get(chatId);
+    if (!chat || chat.userId !== userId) throw new Error("Chat not found");
+    const rows = await ctx.db
+      .query("messages")
+      .withIndex("by_chat", (q) => q.eq("chatId", chatId))
+      .order("desc")
+      .collect();
+    for (const m of rows) {
+      if (m.role !== "assistant") break;
+      await ctx.db.delete(m._id);
+    }
+  },
+});
+
+export const internalLastUserMessage = internalQuery({
+  args: { chatId: v.id("chats"), userId: v.id("users") },
+  handler: async (ctx, { chatId, userId }) => {
+    const chat = await ctx.db.get(chatId);
+    if (!chat || chat.userId !== userId) return null;
+    const rows = await ctx.db
+      .query("messages")
+      .withIndex("by_chat", (q) => q.eq("chatId", chatId))
+      .order("desc")
+      .collect();
+    for (const m of rows) {
+      if (m.role === "user") return m.content;
+    }
+    return null;
+  },
+});
+
 // ---------------------------------------------------------------- chats (public)
 
 export const listChats = query({
@@ -267,6 +325,65 @@ export const clearMyChats = mutation({
       }
       await ctx.db.delete(chat._id);
     }
+  },
+});
+
+// ---------------------------------------------------------------- study plans
+
+export const listStudyPlans = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return [];
+    return ctx.db
+      .query("studyPlans")
+      .withIndex("by_user_created", (q) => q.eq("userId", userId))
+      .order("desc")
+      .take(50);
+  },
+});
+
+export const saveStudyPlan = mutation({
+  args: {
+    id: v.optional(v.id("studyPlans")),
+    title: v.string(),
+    course: v.string(),
+    subjects: v.array(v.string()),
+    examDate: v.string(),
+    dailyHours: v.number(),
+    weakSubjects: v.array(v.string()),
+    strongSubjects: v.array(v.string()),
+    plan: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Sign in required");
+    const { id, ...fields } = args;
+    if (id) {
+      const existing = await ctx.db.get(id);
+      if (!existing || existing.userId !== userId) throw new Error("Plan not found");
+      await ctx.db.patch(id, { ...fields, updatedAt: Date.now() });
+      return id;
+    }
+    const now = Date.now();
+    return await ctx.db.insert("studyPlans", {
+      userId,
+      ...fields,
+      createdAt: now,
+      updatedAt: now,
+    });
+  },
+});
+
+export const deleteStudyPlan = mutation({
+  args: { id: v.id("studyPlans") },
+  handler: async (ctx, { id }) => {
+    const userId = await getAuthUserId(ctx);
+    const plan = await ctx.db.get(id);
+    if (!userId || !plan || plan.userId !== userId) {
+      throw new Error("Plan not found");
+    }
+    await ctx.db.delete(id);
   },
 });
 

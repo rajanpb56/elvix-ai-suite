@@ -69,6 +69,21 @@ const schema = defineSchema(
         "createdAt",
       ]),
 
+    // Saved AI study plans (view / edit / regenerate / delete)
+    studyPlans: defineTable({
+      userId: v.id("users"),
+      title: v.string(),
+      course: v.string(),
+      subjects: v.array(v.string()),
+      examDate: v.string(),
+      dailyHours: v.number(),
+      weakSubjects: v.array(v.string()),
+      strongSubjects: v.array(v.string()),
+      plan: v.string(),
+      createdAt: v.number(),
+      updatedAt: v.number(),
+    }).index("by_user_created", ["userId", "createdAt"]),
+
     // Server-side usage log (no secrets, counts only)
     usageLogs: defineTable({
       userId: v.id("users"),
