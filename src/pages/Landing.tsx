@@ -268,6 +268,14 @@ export default function Landing() {
               rajapbdb6699@gmail.com
             </a>
           </p>
+          <p className="text-xs text-muted-foreground">
+            <Link
+              to="/privacy-policy"
+              className="underline underline-offset-2 transition-colors hover:text-foreground"
+            >
+              Privacy Policy
+            </Link>
+          </p>
           <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <GraduationCap className="size-3.5" />
             Made for Indian students & creators

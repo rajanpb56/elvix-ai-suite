@@ -14,9 +14,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Info, Mail, Moon, Sun, Trash2 } from "lucide-react";
+import { FileText, Info, Mail, Moon, Sun, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useMutation } from "convex/react";
+import { Link } from "react-router";
 import { toast } from "sonner";
 
 function useTheme() {
@@ -200,6 +201,15 @@ export default function Settings() {
           >
             rajapbdb6699@gmail.com
           </a>
+        </p>
+        <p className="flex items-center gap-2 text-xs text-muted-foreground">
+          <FileText className="size-3.5 shrink-0" />
+          <Link
+            to="/privacy-policy"
+            className="text-primary underline underline-offset-2"
+          >
+            Privacy Policy
+          </Link>
         </p>
       </section>
     </div>
