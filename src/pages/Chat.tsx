@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useAuth } from "@/hooks/use-auth";
+import { useLocalName } from "@/hooks/use-local-name";
 import {
   ArrowUp,
   Check,
@@ -40,7 +40,7 @@ const SUGGESTIONS = [
 ];
 
 export default function Chat() {
-  const { user } = useAuth();
+  const [name] = useLocalName();
   const [chatId, setChatId] = useState<Id<"chats"> | null>(null);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -183,8 +183,8 @@ export default function Chat() {
               ELVIX AI
             </h1>
             <p className="text-xs text-muted-foreground">
-              {user?.name
-                ? `Namaste, ${user.name.split(" ")[0]}!`
+              {name
+                ? `Namaste, ${name.split(" ")[0]}!`
                 : "Aapka AI dost"}
             </p>
           </div>

@@ -1,6 +1,5 @@
 import { ElvixLogo, ElvixMark } from "@/components/elvix/Logo";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
 import { TOOLS, CATEGORY_META } from "@/lib/tools";
 import type { ToolCategory } from "@/lib/tools";
 import {
@@ -32,7 +31,7 @@ const FEATURES = [
   {
     icon: ShieldCheck,
     title: "Aapka data, aapke paas",
-    desc: "API keys sirf server par. Aapke chats aur results aapke account mein safe.",
+    desc: "API keys sirf server par. Aapke chats aur results aapke device par safe.",
   },
   {
     icon: Bot,
@@ -42,15 +41,14 @@ const FEATURES = [
 ];
 
 const STEPS = [
-  { n: "1", title: "Sign up karein", desc: "Email OTP ya guest mode — 10 second ka kaam." },
+  { n: "1", title: "App kholein", desc: "Koi sign-up ya OTP nahi — seedha shuru." },
   { n: "2", title: "Tool chunein", desc: "Padhai, content ya daily utilities — jo chahiye." },
   { n: "3", title: "Result pao", desc: "Copy, save ya download — sab kuch ek tap mein." },
 ];
 
 export default function Landing() {
-  const { isAuthenticated } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-  const primaryCta = isAuthenticated ? "/app" : "/auth";
+  const primaryCta = "/app";
 
   return (
     <div className="min-h-dvh">
@@ -65,14 +63,9 @@ export default function Landing() {
             <a href="#how" className="hover:text-foreground">Kaise kaam karta hai</a>
           </nav>
           <div className="flex items-center gap-2">
-            <Button asChild variant="ghost" className="hidden sm:inline-flex">
-              <Link to={primaryCta}>
-                {isAuthenticated ? "Open ELVIX" : "Sign in"}
-              </Link>
-            </Button>
             <Button asChild className="bg-brand-gradient gap-2 rounded-full text-white shadow-md">
               <Link to={primaryCta}>
-                {isAuthenticated ? "Aapka dashboard" : "Free mein shuru karein"}
+                Free mein shuru karein
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
@@ -124,7 +117,7 @@ export default function Landing() {
               className="bg-brand-gradient gap-2 rounded-full px-7 text-white shadow-lg"
             >
               <Link to={primaryCta}>
-                {isAuthenticated ? "Dashboard kholein" : "Free shuru karein"}
+                Free shuru karein
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
@@ -135,7 +128,7 @@ export default function Landing() {
             </Button>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Email OTP sign-in · Guest mode available · Installable PWA
+            No login · No OTP · Kholte hi shuru · Installable PWA
           </p>
         </div>
       </section>
@@ -239,8 +232,7 @@ export default function Landing() {
             Aaj se padhai aur content — dono easy
           </h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            ELVIX free hai. Guest mode try karein ya email se sign-up karein —
-            aapka data save rahega.
+            ELVIX free hai. Koi login nahi — app kholein aur kaam shuru karein.
           </p>
           <Button
             asChild
@@ -248,7 +240,7 @@ export default function Landing() {
             className="bg-brand-gradient mt-6 gap-2 rounded-full px-7 text-white shadow-lg"
           >
             <Link to={primaryCta}>
-              {isAuthenticated ? "Open ELVIX" : "ELVIX try karein — free"}
+              ELVIX try karein — free
               <ArrowRight className="size-4" />
             </Link>
           </Button>

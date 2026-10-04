@@ -1,6 +1,6 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useAuth } from "@/hooks/use-auth";
+import { useLocalName } from "@/hooks/use-local-name";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ToolCard } from "@/components/elvix/ToolCard";
@@ -30,7 +30,7 @@ const POPULAR = [
 const CATEGORIES: ToolCategory[] = ["study", "creator", "ai", "utilities"];
 
 export default function Home() {
-  const { user } = useAuth();
+  const [name] = useLocalName();
   const navigate = useNavigate();
   const [ask, setAsk] = useState("");
   const recent = useQuery(api.data.listHistory, { limit: 3 });
@@ -68,7 +68,7 @@ export default function Home() {
     toast.error("Sirf PDF ya image file support hoti hai.");
   };
 
-  const firstName = user?.name?.split(" ")[0];
+  const firstName = name?.split(" ")[0];
 
   return (
     <div className="space-y-6">

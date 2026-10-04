@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 import { Link } from "react-router";
 
-const LAST_UPDATED = "October 3, 2026";
+const LAST_UPDATED = "October 4, 2026";
 const SUPPORT_EMAIL = "rajapbdb6699@gmail.com";
 
 type Section = {
@@ -24,8 +24,9 @@ const SECTIONS: Section[] = [
   {
     title: "Information we collect",
     bullets: [
-      "Account information — your email address and display name, collected when you sign in with email OTP or create an account. In guest mode we do not ask for personal details until you sign in.",
-      "Content you submit — messages you type in AI chat, doubts or questions you ask, text or PDF content you upload for summarising or notes, study plan details, scripts, hooks, translations and email drafts, along with the AI-generated results saved to your account.",
+      "No sign-up data — ELVIX works without any account. We never ask for your email address, phone number, password or OTP, and we do not create user profiles.",
+      "Content you submit — messages you type in AI chat, doubts or questions you ask, text or PDF content you upload for summarising or notes, study plan details, scripts, hooks, translations and email drafts, along with the AI-generated results saved to your history.",
+      "Anonymous device identifier — to save your chats and results without an account, a random identifier is created automatically in your browser. It contains no personal details and is not linked to your name, email or phone number.",
       "Usage information — basic usage records (which AI feature was used, how often, and when) that help us keep the Service reliable and prevent misuse.",
       "Local preferences — small settings such as your dark/light theme choice, stored in your browser's local storage on your device.",
     ],
@@ -34,7 +35,7 @@ const SECTIONS: Section[] = [
     title: "How we use your information",
     bullets: [
       "To operate the Service — process your inputs, generate AI responses, and save them to your history so you can revisit them.",
-      "To maintain your account — keep your chats, saved results and study plans available across your devices and sessions.",
+      "To keep your content available — your chats, saved results and study plans stay linked to your device so you can pick up where you left off.",
       "To keep ELVIX safe and reliable — monitor usage, prevent abuse, and diagnose technical issues.",
       "To support you — respond to questions or requests you send to our support email.",
     ],
@@ -42,7 +43,7 @@ const SECTIONS: Section[] = [
   {
     title: "AI processing and third-party services",
     paragraphs: [
-      "ELVIX does not generate AI responses on its own. When you use an AI feature, the text needed to fulfil your request is sent through a secure integration gateway to a trusted third-party AI model provider, which generates the response. That response is then shown to you and, where applicable, saved in your account.",
+      "ELVIX does not generate AI responses on its own. When you use an AI feature, the text needed to fulfil your request is sent through a secure integration gateway to a trusted third-party AI model provider, which generates the response. That response is then shown to you and, where applicable, saved in your history.",
       `Please avoid sharing highly sensitive personal information (such as government ID numbers, financial details or passwords) in chats or tool inputs.`,
     ],
   },
@@ -57,22 +58,22 @@ const SECTIONS: Section[] = [
     title: "Data sharing",
     paragraphs: [
       "We do not sell your personal information. We do not share it with advertising networks or data brokers.",
-      "We share information only with: the AI model provider, to generate the responses you request; infrastructure providers (hosting, database, authentication) as needed to operate ELVIX; and authorities, where required by applicable law.",
+      "We share information only with: the AI model provider, to generate the responses you request; infrastructure providers (hosting and database) as needed to operate ELVIX; and authorities, where required by applicable law.",
     ],
   },
   {
     title: "Data retention and deletion",
     bullets: [
-      "We keep your data for as long as your account is active or as needed to provide the Service.",
+      "We keep your data for as long as you use ELVIX or as needed to provide the Service.",
       "You can delete your AI conversations anytime from the chat screen, or from Settings → Data → \"Chat history clear karein\".",
       "You can delete all saved tool results from Settings → Data → \"Saved results clear karein\".",
-      `To delete your account or all data associated with it, email us at ${SUPPORT_EMAIL} and we will process the request.`,
+      `To have all data stored for your device deleted from our servers, email us at ${SUPPORT_EMAIL} and we will process the request.`,
     ],
   },
   {
     title: "Local storage and cookies",
     paragraphs: [
-      "ELVIX uses only essential local storage — for example, remembering your theme preference. We do not use third-party advertising or tracking cookies.",
+      "ELVIX uses only essential local storage on your device — for example, remembering your theme preference and the display name you set in your Profile. We do not use third-party advertising or tracking cookies.",
     ],
   },
   {

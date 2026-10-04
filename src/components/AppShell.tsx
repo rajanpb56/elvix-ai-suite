@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/use-auth";
+import { useLocalName } from "@/hooks/use-local-name";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ElvixLogo } from "@/components/elvix/Logo";
 import { Button } from "@/components/ui/button";
@@ -15,16 +15,14 @@ import {
   GraduationCap,
   History as HistoryIcon,
   House,
-  LogOut,
   Menu,
   Settings as SettingsIcon,
   Sparkles,
   User,
   Wrench,
 } from "lucide-react";
-import { NavLink, Outlet, useLocation, useNavigate } from "react-router";
+import { NavLink, Outlet, useLocation } from "react-router";
 import { useState } from "react";
-import { toast } from "sonner";
 
 const NAV = [
   { to: "/app", label: "Home", icon: House, end: true },
@@ -85,15 +83,8 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 export function AppShell() {
   const isMobile = useIsMobile();
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const [name] = useLocalName();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-    toast.success("Sign out ho gaya. Phir milenge!");
-  };
 
   const title =
     TITLES[location.pathname] ??
@@ -113,25 +104,14 @@ export function AppShell() {
 
         <div className="mt-4 flex items-center gap-2.5 rounded-2xl border border-border/70 bg-card/60 p-3">
           <div className="bg-brand-gradient flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white">
-            {(user?.name?.[0] ?? "?").toUpperCase()}
+            {(name?.[0] ?? "E").toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">
-              {user?.name || "Guest"}
-            </p>
+            <p className="truncate text-sm font-medium">{name || "Dost"}</p>
             <p className="truncate text-xs text-muted-foreground">
-              {user?.email || "Guest account"}
+              No login · No tension
             </p>
           </div>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="size-8 text-muted-foreground hover:text-destructive"
-            onClick={handleSignOut}
-            aria-label="Sign out"
-          >
-            <LogOut className="size-4" />
-          </Button>
         </div>
       </aside>
 
