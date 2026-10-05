@@ -1,0 +1,7 @@
+User-agent: *
+
+# Allow Google (and all bots) to crawl the site
+Allow: /
+
+# Reference the sitemap
+Sitemap: https://elvix.freebuff.app/sitemap.xml
