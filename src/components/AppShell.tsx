@@ -26,7 +26,7 @@ import { useState } from "react";
 
 const NAV = [
   { to: "/app", label: "Home", icon: House, end: true },
-  { to: "/app/chat", label: "AI Chat", icon: Sparkles },
+  { to: "/app/ai-chat", label: "AI Chat", icon: Sparkles },
   { to: "/app/tools", label: "AI Tools", icon: Bot },
   { to: "/app/study", label: "Study", icon: GraduationCap },
   { to: "/app/creator", label: "Creator", icon: Clapperboard },
@@ -38,14 +38,14 @@ const NAV = [
 
 const BOTTOM_NAV = [
   { to: "/app", label: "Home", icon: House, end: true },
-  { to: "/app/chat", label: "AI Tools", icon: Sparkles },
+  { to: "/app/ai-chat", label: "AI Tools", icon: Sparkles },
   { to: "/app/history", label: "History", icon: HistoryIcon, end: false },
   { to: "/app/profile", label: "Profile", icon: User, end: false },
 ];
 
 const TITLES: Record<string, string> = {
   "/app": "Home",
-  "/app/chat": "ELVIX AI",
+  "/app/ai-chat": "ELVIX AI",
   "/app/tools": "AI Tools",
   "/app/study": "Study Hub",
   "/app/creator": "Creator Hub",
@@ -88,7 +88,7 @@ export function AppShell() {
 
   const title =
     TITLES[location.pathname] ??
-    (location.pathname.startsWith("/app/chat") ? "ELVIX AI" : "ELVIX");
+    (location.pathname.startsWith("/app/ai-chat") ? "ELVIX AI" : "ELVIX");
 
   return (
     <div className="min-h-dvh bg-background">

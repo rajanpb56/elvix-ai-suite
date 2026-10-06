@@ -39,8 +39,8 @@ export default function Profile() {
   ];
 
   const quickLinks = [
-    { to: "/app/chat", label: "ELVIX AI Chat", icon: Bot },
-    { to: "/app/doubt-solver", label: "AI Doubt Solver", icon: GraduationCap },
+    { to: "/app/ai-chat", label: "ELVIX AI Chat", icon: Bot },
+    { to: "/app/ai-doubt-solver", label: "AI Doubt Solver", icon: GraduationCap },
     { to: "/app/shorts-script", label: "Shorts Script", icon: Clapperboard },
     { to: "/app/email-writer", label: "Email Writer", icon: Wrench },
   ];

@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToolCard } from "@/components/elvix/ToolCard";
 import { stripMarkdown } from "@/components/elvix/Markdown";
 import { ElvixMark } from "@/components/elvix/Logo";
-import { CATEGORY_META, toolByPath } from "@/lib/tools";
+import { CATEGORY_META, toolById } from "@/lib/tools";
 import type { ToolCategory } from "@/lib/tools";
 import {
   FileText,
@@ -45,7 +45,7 @@ export default function Home() {
     } catch {
       // ignore
     }
-    navigate("/app/chat");
+    navigate("/app/ai-chat");
   };
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +62,7 @@ export default function Home() {
       toast.info(
         "Image ke andar ka text AI ko nahi dikhta abhi — question chat mein type karein.",
       );
-      navigate("/app/chat");
+      navigate("/app/ai-chat");
       return;
     }
     toast.error("Sirf PDF ya image file support hoti hai.");
@@ -157,7 +157,7 @@ export default function Home() {
         <h2 className="mb-3 font-display text-lg font-semibold">Popular Tools</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {POPULAR.map((id) => {
-            const tool = toolByPath(`/app/${id}`);
+            const tool = toolById(id);
             return tool ? <ToolCard key={id} tool={tool} /> : null;
           })}
         </div>

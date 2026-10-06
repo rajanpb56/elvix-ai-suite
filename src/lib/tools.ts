@@ -28,7 +28,7 @@ export const TOOLS: ToolDef[] = [
   {
     id: "chat",
     name: "ELVIX AI Chat",
-    path: "/app/chat",
+    path: "/app/ai-chat",
     category: "ai",
     icon: Bot,
     blurb: "Kisi bhi sawaal ka jawab — padhai ya general, sab kuch.",
@@ -36,7 +36,7 @@ export const TOOLS: ToolDef[] = [
   {
     id: "doubt-solver",
     name: "AI Doubt Solver",
-    path: "/app/doubt-solver",
+    path: "/app/ai-doubt-solver",
     category: "study",
     icon: GraduationCap,
     blurb: "Step-by-step solution + exam-ready answer, subject ke hisaab se.",
@@ -44,7 +44,7 @@ export const TOOLS: ToolDef[] = [
   {
     id: "notes-maker",
     name: "AI Notes Maker",
-    path: "/app/notes-maker",
+    path: "/app/ai-notes-maker",
     category: "study",
     icon: NotebookPen,
     blurb: "Topic se quick, detailed ya revision notes — copy & download ready.",
@@ -60,7 +60,7 @@ export const TOOLS: ToolDef[] = [
   {
     id: "study-planner",
     name: "AI Study Planner",
-    path: "/app/study-planner",
+    path: "/app/ai-study-planner",
     category: "study",
     icon: CalendarDays,
     blurb: "Exam date aur daily hours se realistic day-wise schedule.",

@@ -80,7 +80,7 @@ export default function Landing() {
                   {TOOLS.map((t) => (
                     <Link
                       key={t.id}
-                      to={primaryCta}
+                      to={t.path}
                       onClick={() => setMenuOpen(false)}
                       className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-accent"
                     >
@@ -147,7 +147,7 @@ export default function Landing() {
           {TOOLS.map((tool) => (
             <Link
               key={tool.id}
-              to={primaryCta}
+              to={tool.path}
               className="group glass rounded-2xl p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg"
             >
               <div

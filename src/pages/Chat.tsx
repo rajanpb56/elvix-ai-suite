@@ -180,7 +180,7 @@ export default function Chat() {
           <ElvixMark className="size-9" />
           <div>
             <h1 className="font-display text-lg font-bold leading-tight">
-              ELVIX AI
+              ELVIX AI Chat
             </h1>
             <p className="text-xs text-muted-foreground">
               {name

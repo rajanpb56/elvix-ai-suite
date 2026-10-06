@@ -2,6 +2,7 @@ import '@vly-ai/integrations';
 import { Toaster } from "@/components/ui/sonner";
 import { AutoAuth } from "@/components/AutoAuth";
 import { RequireAuth } from "@/components/RequireAuth";
+import { SeoToolPage } from "@/components/elvix/SeoToolPage";
 import { VlyToolbar } from "../vly-toolbar-readonly.tsx";
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ConvexReactClient } from "convex/react";
@@ -156,25 +157,123 @@ createRoot(document.getElementById("root")!).render(
                 }
               >
                 <Route index element={<Home />} />
-                <Route path="chat" element={<Chat />} />
                 <Route path="tools" element={<AiToolsHub />} />
                 <Route path="study" element={<StudyHub />} />
                 <Route path="creator" element={<CreatorHub />} />
                 <Route path="utilities" element={<UtilitiesHub />} />
-                <Route path="doubt-solver" element={<DoubtSolver />} />
-                <Route path="notes-maker" element={<NotesMaker />} />
-                <Route path="pdf-summarizer" element={<PdfSummarizer />} />
-                <Route path="study-planner" element={<StudyPlanner />} />
-                <Route path="question-generator" element={<QuestionGenerator />} />
-                <Route path="shorts-script" element={<ShortsScript />} />
-                <Route path="hook-generator" element={<HookGenerator />} />
-                <Route path="text-summarizer" element={<TextSummarizer />} />
-                <Route path="translator" element={<Translator />} />
-                <Route path="email-writer" element={<EmailWriter />} />
                 <Route path="history" element={<History />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="settings" element={<Settings />} />
               </Route>
+              {/* Public, indexable tool pages — same app shell, no login gate.
+                  Each renders the existing working tool plus SEO content. */}
+              <Route element={<AppShell />}>
+                <Route
+                  path="/app/ai-chat"
+                  element={
+                    <SeoToolPage toolId="chat">
+                      <Chat />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/ai-doubt-solver"
+                  element={
+                    <SeoToolPage toolId="doubt-solver">
+                      <DoubtSolver />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/ai-notes-maker"
+                  element={
+                    <SeoToolPage toolId="notes-maker">
+                      <NotesMaker />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/pdf-summarizer"
+                  element={
+                    <SeoToolPage toolId="pdf-summarizer">
+                      <PdfSummarizer />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/ai-study-planner"
+                  element={
+                    <SeoToolPage toolId="study-planner">
+                      <StudyPlanner />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/question-generator"
+                  element={
+                    <SeoToolPage toolId="question-generator">
+                      <QuestionGenerator />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/shorts-script"
+                  element={
+                    <SeoToolPage toolId="shorts-script">
+                      <ShortsScript />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/hook-generator"
+                  element={
+                    <SeoToolPage toolId="hook-generator">
+                      <HookGenerator />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/text-summarizer"
+                  element={
+                    <SeoToolPage toolId="text-summarizer">
+                      <TextSummarizer />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/translator"
+                  element={
+                    <SeoToolPage toolId="translator">
+                      <Translator />
+                    </SeoToolPage>
+                  }
+                />
+                <Route
+                  path="/app/email-writer"
+                  element={
+                    <SeoToolPage toolId="email-writer">
+                      <EmailWriter />
+                    </SeoToolPage>
+                  }
+                />
+              </Route>
+              {/* Old tool URLs redirect to their new SEO pages */}
+              <Route
+                path="/app/chat"
+                element={<Navigate to="/app/ai-chat" replace />}
+              />
+              <Route
+                path="/app/doubt-solver"
+                element={<Navigate to="/app/ai-doubt-solver" replace />}
+              />
+              <Route
+                path="/app/notes-maker"
+                element={<Navigate to="/app/ai-notes-maker" replace />}
+              />
+              <Route
+                path="/app/study-planner"
+                element={<Navigate to="/app/ai-study-planner" replace />}
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
