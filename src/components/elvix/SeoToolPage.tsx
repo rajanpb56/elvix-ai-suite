@@ -15,7 +15,7 @@ const SITE_URL = "https://elvix.freebuff.app";
 /** Defaults from index.html — restored when leaving a tool page. */
 const DEFAULT_TITLE = "ELVIX AI Suite";
 const DEFAULT_DESCRIPTION =
-  "ELVIX — Soch Se Solution Tak. AI chat aur doubt solver jo students ke liye banaya gaya hai.";
+  "ELVIX — from idea to answer. Free AI tools for students and creators: chat, doubts, notes, summaries and more.";
 
 /**
  * Public SEO wrapper for every tool page. Renders the working tool first
@@ -161,7 +161,7 @@ export function SeoToolPage({
           to="/app"
           className="text-primary mt-4 inline-block text-xs font-medium hover:underline"
         >
-          Sab tools ek jagah dekhein →
+          View all tools →
         </Link>
       </section>
     </div>

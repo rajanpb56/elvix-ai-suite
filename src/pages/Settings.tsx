@@ -59,7 +59,7 @@ export default function Settings() {
       <header>
         <h1 className="font-display text-2xl font-bold tracking-tight">Settings</h1>
         <p className="text-sm text-muted-foreground">
-          ELVIX ko apne hisaab se set karein.
+          Set up ELVIX the way you like.
         </p>
       </header>
 
@@ -75,7 +75,7 @@ export default function Settings() {
             <div>
               <Label htmlFor="theme-toggle">Dark mode</Label>
               <p className="text-xs text-muted-foreground">
-                Default dark hai — light mode ke liye switch off karein.
+                Dark by default — switch off for light mode.
               </p>
             </div>
           </div>
@@ -93,9 +93,9 @@ export default function Settings() {
 
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-sm font-medium">Chat history clear karein</p>
+            <p className="text-sm font-medium">Clear chat history</p>
             <p className="text-xs text-muted-foreground">
-              Saari ELVIX AI conversations permanently delete ho jayengi.
+              All ELVIX AI conversations will be permanently deleted.
             </p>
           </div>
           <AlertDialog>
@@ -107,10 +107,10 @@ export default function Settings() {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Saari chats delete karein?</AlertDialogTitle>
+                <AlertDialogTitle>Delete all chats?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Yeh action undo nahi ho sakta. Aapki saari chat history
-                  permanently delete ho jayegi.
+                  This action cannot be undone. Your entire chat history will
+                  be permanently deleted.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -119,13 +119,13 @@ export default function Settings() {
                   onClick={async () => {
                     try {
                       await clearMyChats({});
-                      toast.success("Saari chats clear ho gayi.");
+                      toast.success("All chats cleared.");
                     } catch {
-                      toast.error("Chats clear nahi hui.");
+                      toast.error("Couldn't clear chats.");
                     }
                   }}
                 >
-                  Delete karein
+                  Delete
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -134,9 +134,10 @@ export default function Settings() {
 
         <div className="flex items-center justify-between gap-3 border-t border-border/60 pt-4">
           <div>
-            <p className="text-sm font-medium">Saved results clear karein</p>
+            <p className="text-sm font-medium">Clear saved results</p>
             <p className="text-xs text-muted-foreground">
-              Doubt answers, notes, scripts — poori history delete ho jayegi.
+              Doubt answers, notes, scripts — the entire history will be
+              deleted.
             </p>
           </div>
           <AlertDialog>
@@ -148,10 +149,10 @@ export default function Settings() {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Saari history delete karein?</AlertDialogTitle>
+                <AlertDialogTitle>Delete all history?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Yeh action undo nahi ho sakta. Saare saved results permanently
-                  delete ho jayenge.
+                  This action cannot be undone. All saved results will be
+                  permanently deleted.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -160,13 +161,13 @@ export default function Settings() {
                   onClick={async () => {
                     try {
                       await clearHistory({});
-                      toast.success("History clear ho gayi.");
+                      toast.success("History cleared.");
                     } catch {
-                      toast.error("History clear nahi hui.");
+                      toast.error("Couldn't clear history.");
                     }
                   }}
                 >
-                  Delete karein
+                  Delete
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -181,15 +182,15 @@ export default function Settings() {
           <div>
             <p className="text-sm font-semibold">ELVIX</p>
             <p className="text-xs text-muted-foreground">
-              Soch Se Solution Tak · v1.0
+              From Idea To Answer · v1.0
             </p>
           </div>
         </div>
         <div className="flex items-start gap-2 rounded-xl border border-border/70 bg-card/60 p-3 text-xs text-muted-foreground">
           <Info className="mt-0.5 size-3.5 shrink-0" />
           <p>
-            AI responses galat bhi ho sakte hain — important facts verify
-            karein. Exam answers apne teacher se cross-check karein.
+            AI responses can sometimes be wrong — verify important facts, and
+            cross-check exam answers with your teacher.
           </p>
         </div>
         <p className="flex items-center gap-2 text-xs text-muted-foreground">

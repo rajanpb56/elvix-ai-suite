@@ -54,18 +54,18 @@ export default function History() {
   const handleDelete = async (id: Id<"historyItems">) => {
     try {
       await deleteHistoryItem({ id });
-      toast.success("Item delete ho gaya.");
+      toast.success("Item deleted.");
     } catch {
-      toast.error("Delete nahi hua.");
+      toast.error("Couldn't delete.");
     }
   };
 
   const handleClearAll = async () => {
     try {
       await clearHistory({});
-      toast.success("Poori history clear ho gayi.");
+      toast.success("Full history cleared.");
     } catch {
-      toast.error("History clear nahi hui.");
+      toast.error("Couldn't clear history.");
     }
   };
 
@@ -77,7 +77,7 @@ export default function History() {
             History
           </h1>
           <p className="text-sm text-muted-foreground">
-            Aapke saare saved AI results ek jagah.
+            All your saved AI results in one place.
           </p>
         </div>
         {items && items.length > 0 && (
@@ -99,7 +99,7 @@ export default function History() {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search karein — title, tool ya preview…"
+            placeholder="Search by title, tool or preview…"
             className="pl-9"
           />
         </div>
@@ -122,12 +122,12 @@ export default function History() {
       </div>
 
       {items === undefined ? (
-        <p className="py-10 text-center text-sm text-muted-foreground">Load ho raha hai…</p>
+        <p className="py-10 text-center text-sm text-muted-foreground">Loading…</p>
       ) : items.length === 0 ? (
         <EmptyState
           icon={<span>🗂️</span>}
-          title="Koi history nahi hai"
-          hint="Tools se result save karte hi yahan dikhega."
+          title="No history yet"
+          hint="Anything you save from the tools will appear here."
         />
       ) : (
         <div className="space-y-2.5">

@@ -59,9 +59,9 @@ export const sendChatMessage = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const content = args.message.trim();
-    if (!content) throw new Error("Message khaali hai. Kuch likhein.");
+    if (!content) throw new Error("Your message is empty. Type something first.");
     if (content.length > MAX_INPUT_CHARS) {
-      throw new Error("Message bahut lamba hai. Chhota message bhejein.");
+      throw new Error("Your message is too long. Please send a shorter one.");
     }
 
     // Resolve or create chat (always owned by this user)
@@ -129,9 +129,9 @@ export const solveDoubt = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const question = args.question.trim();
-    if (!question) throw new Error("Pehle apna question likhein.");
+    if (!question) throw new Error("Type your question first.");
     if (question.length > MAX_INPUT_CHARS) {
-      throw new Error("Question bahut lamba hai. Thoda chhota likhein.");
+      throw new Error("The question is too long. Please shorten it.");
     }
 
     const subjectLine =
@@ -221,7 +221,7 @@ export const regenerateResponse = action({
       chatId: args.chatId,
       userId,
     });
-    if (!lastUser) throw new Error("Phir se banane ke liye koi message nahi hai.");
+    if (!lastUser) throw new Error("There is no message to regenerate from.");
 
     await ctx.runMutation(internal.data.internalResetTrailingAssistant, {
       chatId: args.chatId,
@@ -284,7 +284,7 @@ export const makeNotes = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const topic = args.topic.trim();
-    if (!topic) throw new Error("Topic likhna zaroori hai.");
+    if (!topic) throw new Error("A topic is required.");
 
     const chapter = args.chapter?.trim()
       ? ` (Chapter: ${args.chapter.trim()})`
@@ -342,7 +342,7 @@ export const summarizeContent = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const text = args.text.trim();
-    if (!text) throw new Error("Koi text nahi mila summarize karne ke liye.");
+    if (!text) throw new Error("There is no text to summarize.");
 
     const lengthLine = {
       short: "a short overview (max ~150 words)",
@@ -393,7 +393,7 @@ export const makeStudyPlan = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     if (!args.subjects.length)
-      throw new Error("Kam se kam ek subject likhein.");
+      throw new Error("Enter at least one subject.");
     if (args.dailyHours <= 0 || args.dailyHours > 16)
       throw new Error("Daily hours 1 se 16 ke beech honi chahiye.");
 
@@ -447,8 +447,8 @@ export const generateQuestions = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const count = Math.min(30, Math.max(1, Math.round(args.count)));
-    if (!args.subject.trim()) throw new Error("Subject likhein.");
-    if (!args.chapter.trim()) throw new Error("Chapter likhein.");
+    if (!args.subject.trim()) throw new Error("Enter a subject.");
+    if (!args.chapter.trim()) throw new Error("Enter a chapter.");
 
     const mcqCount = Math.ceil(count / 2);
     const shortCount = Math.max(1, Math.round(count * 0.3));
@@ -500,7 +500,7 @@ export const shortsScript = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const topic = args.topic.trim();
-    if (!topic) throw new Error("Topic likhein.");
+    if (!topic) throw new Error("Enter a topic.");
 
     return runTool(
       ctx,
@@ -535,7 +535,7 @@ export const hookGenerator = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const topic = args.topic.trim();
-    if (!topic) throw new Error("Topic likhein.");
+    if (!topic) throw new Error("Enter a topic.");
     const count = Math.min(20, Math.max(3, Math.round(args.count)));
 
     return runTool(
@@ -571,7 +571,7 @@ export const translateText = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const text = args.text.trim();
-    if (!text) throw new Error("Translate karne ke liye text likhein.");
+    if (!text) throw new Error("Enter text to translate.");
     const sourceLine = args.sourceLanguage?.trim()
       ? `from ${args.sourceLanguage.trim()} `
       : "";
@@ -607,7 +607,7 @@ export const writeEmail = action({
     if (!userId) throw new Error("UNAUTHORIZED");
 
     const purpose = args.purpose.trim();
-    if (!purpose) throw new Error("Email ka purpose likhein.");
+    if (!purpose) throw new Error("Enter the email purpose.");
 
     return runTool(
       ctx,

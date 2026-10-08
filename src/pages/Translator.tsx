@@ -14,6 +14,7 @@ import { AI_CONFIG_MESSAGE } from "@/components/elvix/States";
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction } from "convex/react";
+import { trackToolUsed } from "@/lib/analytics";
 
 const LANGUAGES = [
   "Hindi",
@@ -46,6 +47,7 @@ export default function Translator() {
 
   const run = async () => {
     if (!text.trim() || loading) return;
+    trackToolUsed("Translator");
     setLoading(true);
     setError(null);
     try {
@@ -56,7 +58,7 @@ export default function Translator() {
       });
       setResult(res.text);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -69,12 +71,12 @@ export default function Translator() {
 
       <div className="glass ring-soft space-y-4 rounded-3xl p-4 sm:p-5">
         <div className="space-y-2">
-          <Label htmlFor="tr-text">Text likhein *</Label>
+          <Label htmlFor="tr-text">Enter text *</Label>
           <Textarea
             id="tr-text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Jo bhi translate karna hai yahan paste karein…"
+            placeholder="Paste whatever you'd like to translate…"
             className="min-h-28 resize-none"
           />
         </div>
@@ -119,7 +121,7 @@ export default function Translator() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Translate ho raha hai…" : "Translate Karein"}
+            {loading ? "Translating…" : "Translate"}
           </Button>
         </div>
       </div>
@@ -128,7 +130,7 @@ export default function Translator() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Text paste karein aur language choose karein — clean translation turant milegi."
+        emptyHint="Paste your text and choose a language — you'll get a clean translation instantly."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onClear={() => {

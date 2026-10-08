@@ -62,7 +62,7 @@ export function ElvixLogo({
         <ElvixWordmark />
         {tagline && (
           <span className="mt-1 text-[10px] font-medium tracking-[0.18em] text-muted-foreground uppercase">
-            Soch Se Solution Tak
+            From Idea To Answer
           </span>
         )}
       </span>

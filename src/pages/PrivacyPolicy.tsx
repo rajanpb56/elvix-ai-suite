@@ -17,7 +17,7 @@ const SECTIONS: Section[] = [
   {
     title: "Overview",
     paragraphs: [
-      `ELVIX ("we", "our", "us") is an AI-powered platform for students and creators — Soch Se Solution Tak. It offers AI chat, doubt solving, notes making, PDF summarising, study planning, question generation, scripts, hooks, translation, email writing and other utilities (together, the "Service").`,
+      `ELVIX ("we", "our", "us") is an AI-powered platform for students and creators. It offers AI chat, doubt solving, notes making, PDF summarising, study planning, question generation, scripts, hooks, translation, email writing and other utilities (together, the "Service").`,
       `This Privacy Policy explains what information we collect when you use ELVIX, how we use and protect it, and the choices you have. By using ELVIX, you agree to this policy.`,
     ],
   },
@@ -65,8 +65,8 @@ const SECTIONS: Section[] = [
     title: "Data retention and deletion",
     bullets: [
       "We keep your data for as long as you use ELVIX or as needed to provide the Service.",
-      "You can delete your AI conversations anytime from the chat screen, or from Settings → Data → \"Chat history clear karein\".",
-      "You can delete all saved tool results from Settings → Data → \"Saved results clear karein\".",
+      "You can delete your AI conversations anytime from the chat screen, or from Settings → Data → \"Clear chat history\".",
+      "You can delete all saved tool results from Settings → Data → \"Clear saved results\".",
       `To have all data stored for your device deleted from our servers, email us at ${SUPPORT_EMAIL} and we will process the request.`,
     ],
   },

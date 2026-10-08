@@ -60,12 +60,12 @@ export default function Home() {
     if (f.type.startsWith("image/")) {
       setUploadedName(f.name);
       toast.info(
-        "Image ke andar ka text AI ko nahi dikhta abhi — question chat mein type karein.",
+        "AI can't read text inside images yet — type your question in chat.",
       );
       navigate("/app/ai-chat");
       return;
     }
-    toast.error("Sirf PDF ya image file support hoti hai.");
+    toast.error("Only PDF or image files are supported.");
   };
 
   const firstName = name?.split(" ")[0];
@@ -75,13 +75,13 @@ export default function Home() {
       {/* Greeting */}
       <header className="space-y-1">
         <p className="text-sm font-medium text-muted-foreground">
-          Namaste {firstName ? `${firstName} 👋` : "👋"}
+          Hey {firstName ? `${firstName} 👋` : "there 👋"}
         </p>
         <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-          Aaj kya solve karna hai?
+          What are we solving today?
         </h1>
         <p className="text-sm text-muted-foreground">
-          Soch se solution tak — AI ke saath.
+          From idea to answer — with AI.
         </p>
       </header>
 
@@ -103,9 +103,9 @@ export default function Home() {
               handleAsk();
             }
           }}
-          placeholder="Yahan apna question likhein… jaise: Newton ka second law simple words mein samjhao"
+          placeholder="Type your question here… e.g. Explain Newton's second law in simple words"
           className="min-h-24 resize-none border-0 bg-transparent p-0 text-base shadow-none focus-visible:ring-0"
-          aria-label="Apna question likhein"
+          aria-label="Type your question"
         />
         <div className="mt-3 flex items-center gap-2">
           <input
@@ -147,7 +147,7 @@ export default function Home() {
         </div>
         {uploadedName && (
           <p className="mt-2 text-xs text-muted-foreground">
-            📎 {uploadedName} — chat mein question ke saath mention karein.
+            📎 {uploadedName} — mention it along with your question in chat.
           </p>
         )}
       </section>
@@ -196,7 +196,7 @@ export default function Home() {
               to="/app/history"
               className="text-xs font-medium text-primary hover:underline"
             >
-              Sab dekhein →
+              View all →
             </Link>
           </div>
           <div className="space-y-2">

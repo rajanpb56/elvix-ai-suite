@@ -395,7 +395,7 @@ export const updateProfile = mutation({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Sign in required");
     const clean = name.trim().slice(0, 60);
-    if (!clean) throw new Error("Naam khaali nahi ho sakta");
+    if (!clean) throw new Error("Name cannot be empty");
     await ctx.db.patch(userId, { name: clean });
   },
 });

@@ -15,6 +15,7 @@ import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const MAX_CHARS = 60000;
 
@@ -31,6 +32,7 @@ export default function TextSummarizer() {
 
   const run = async () => {
     if (!text.trim() || loading) return;
+    trackToolUsed("Text Summarizer");
     setLoading(true);
     setError(null);
     try {
@@ -41,7 +43,7 @@ export default function TextSummarizer() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -59,9 +61,9 @@ export default function TextSummarizer() {
         content: result,
       });
       setSaved(true);
-      toast.success("Summary history mein save ho gayi.");
+      toast.success("Summary saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -72,18 +74,18 @@ export default function TextSummarizer() {
       <div className="glass ring-soft space-y-4 rounded-3xl p-4 sm:p-5">
         <div className="space-y-2">
           <Label htmlFor="ts-text">
-            Lamba text paste karein * ({text.length.toLocaleString()} chars)
+            Paste your long text * ({text.length.toLocaleString()} characters)
           </Label>
           <Textarea
             id="ts-text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Article, chapter ya notes yahan paste karein — ELVIX crisp summary banayega."
+            placeholder="Paste an article, chapter or notes — ELVIX will turn it into a crisp summary."
             className="min-h-36 resize-none"
           />
           {text.length > MAX_CHARS && (
             <p className="text-xs text-destructive">
-              Pehle {MAX_CHARS.toLocaleString()} characters use honge.
+              Only the first {MAX_CHARS.toLocaleString()} characters will be used.
             </p>
           )}
         </div>
@@ -108,7 +110,7 @@ export default function TextSummarizer() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Summarize ho raha hai…" : "Summarize Karein"}
+            {loading ? "Summarising…" : "Summarize"}
           </Button>
         </div>
       </div>
@@ -117,7 +119,7 @@ export default function TextSummarizer() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Text paste karke Summarize dabayein — summary, key points aur quick revision milega."
+        emptyHint="Paste your text and tap Summarize — you'll get a summary, key points and quick revision."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

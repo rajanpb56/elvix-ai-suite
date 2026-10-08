@@ -15,6 +15,7 @@ import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const LANGUAGES = ["Hinglish", "Hindi", "English"];
 const DURATIONS = ["15s", "30s", "45s", "60s"];
@@ -41,6 +42,7 @@ export default function ShortsScript() {
 
   const run = async () => {
     if (!topic.trim() || loading) return;
+    trackToolUsed("Shorts Script");
     setLoading(true);
     setError(null);
     try {
@@ -53,7 +55,7 @@ export default function ShortsScript() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -71,9 +73,9 @@ export default function ShortsScript() {
         content: `**Topic:** ${topic}\n**Language:** ${language}\n**Duration:** ${duration}\n**Style:** ${style}\n\n${result}`,
       });
       setSaved(true);
-      toast.success("Script history mein save ho gaya.");
+      toast.success("Script saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -88,7 +90,7 @@ export default function ShortsScript() {
             id="ss-topic"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            placeholder="Jaise: 5 facts about black holes"
+            placeholder="e.g. 5 facts about black holes"
           />
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
@@ -146,7 +148,7 @@ export default function ShortsScript() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Script likha ja raha hai…" : "Script Banayein"}
+            {loading ? "Writing your script…" : "Create Script"}
           </Button>
         </div>
       </div>
@@ -155,7 +157,7 @@ export default function ShortsScript() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Topic choose karke Script Banayein dabayein — hook, timestamped script, captions, hashtags aur CTA sab ek jagah."
+        emptyHint="Enter a topic and tap Create Script — hook, timestamped script, captions, hashtags and CTA in one place."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

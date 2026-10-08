@@ -18,8 +18,8 @@ export function NotConfiguredCard({ className }: { className?: string }) {
       <div className="space-y-1">
         <p className="text-sm font-medium text-foreground">{AI_CONFIG_MESSAGE}</p>
         <p className="text-xs text-muted-foreground">
-          Baaki tools apni jagah kaam karenge. ELVIX team ko pata hai — jald
-          enable ho jayega.
+          Other tools keep working as usual. We're aware and will enable this
+          feature soon.
         </p>
       </div>
     </div>
@@ -58,7 +58,7 @@ export function ErrorState({
 }
 
 export function AiThinking({
-  label = "ELVIX AI soch raha hai…",
+  label = "ELVIX AI is thinking…",
   className,
 }: {
   label?: string;

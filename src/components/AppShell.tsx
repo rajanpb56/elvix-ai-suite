@@ -107,9 +107,9 @@ export function AppShell() {
             {(name?.[0] ?? "E").toUpperCase()}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">{name || "Dost"}</p>
+            <p className="truncate text-sm font-medium">{name || "Guest"}</p>
             <p className="truncate text-xs text-muted-foreground">
-              No login · No tension
+              No account needed
             </p>
           </div>
         </div>
@@ -125,7 +125,7 @@ export function AppShell() {
                   variant="ghost"
                   size="icon"
                   className="size-9"
-                  aria-label="Menu kholein"
+                  aria-label="Open menu"
                 >
                   <Menu className="size-5" />
                 </Button>

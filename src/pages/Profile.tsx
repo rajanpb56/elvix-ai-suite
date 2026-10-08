@@ -25,12 +25,12 @@ export default function Profile() {
 
   const handleSave = () => {
     if (!draft.trim()) {
-      toast.error("Naam khaali nahi ho sakta.");
+      toast.error("Name cannot be empty.");
       return;
     }
     setLocalName(draft.trim());
     setEditing(false);
-    toast.success("Naam update ho gaya.");
+    toast.success("Name updated.");
   };
 
   const stats = [
@@ -69,7 +69,7 @@ export default function Profile() {
                     if (e.key === "Enter") handleSave();
                   }}
                   className="h-9"
-                  aria-label="Apna naam"
+                  aria-label="Your name"
                   autoFocus
                 />
                 <Button size="icon" className="size-9 shrink-0" onClick={handleSave}>
@@ -78,7 +78,7 @@ export default function Profile() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <p className="truncate font-semibold">{name || "Dost"}</p>
+                <p className="truncate font-semibold">{name || "Guest"}</p>
                 <Button
                   size="icon"
                   variant="ghost"
@@ -87,14 +87,14 @@ export default function Profile() {
                     setDraft(name);
                     setEditing(true);
                   }}
-                  aria-label="Naam edit karein"
+                  aria-label="Edit name"
                 >
                   <Pencil className="size-3.5" />
                 </Button>
               </div>
             )}
             <p className="truncate text-sm text-muted-foreground">
-              Aapka naam sirf aapke device par save hota hai.
+              Your name is saved only on this device.
             </p>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function Profile() {
       </section>
 
       <section aria-label="Quick links" className="space-y-2">
-        <h2 className="font-display text-lg font-semibold">Jaldi se kholein</h2>
+        <h2 className="font-display text-lg font-semibold">Quick links</h2>
         <div className="grid gap-2 sm:grid-cols-2">
           {quickLinks.map(({ to, label, icon: Icon }) => (
             <Link
@@ -134,9 +134,9 @@ export default function Profile() {
         <div className="flex items-center gap-2.5">
           <ElvixMark className="size-8" />
           <div>
-            <p className="text-sm font-semibold">ELVIX · Soch Se Solution Tak</p>
+            <p className="text-sm font-semibold">ELVIX · From Idea To Answer</p>
             <p className="text-xs text-muted-foreground">
-              Madad chahiye?{" "}
+              Need help?{" "}
               <a
                 href="mailto:rajapbdb6699@gmail.com"
                 className="text-primary underline underline-offset-2"

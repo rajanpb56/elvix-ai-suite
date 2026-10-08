@@ -15,6 +15,7 @@ import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const SUBJECTS = [
   "Physics",
@@ -43,6 +44,7 @@ export default function QuestionGenerator() {
 
   const run = async () => {
     if (!chapter.trim() || loading) return;
+    trackToolUsed("Question Generator");
     setLoading(true);
     setError(null);
     try {
@@ -56,7 +58,7 @@ export default function QuestionGenerator() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -74,9 +76,9 @@ export default function QuestionGenerator() {
         content: `**Subject:** ${subject}\n**Class:** ${className || "-"}\n**Chapter:** ${chapter}\n**Difficulty:** ${difficulty}\n\n${result}`,
       });
       setSaved(true);
-      toast.success("Questions history mein save ho gaye.");
+      toast.success("Questions saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -107,7 +109,7 @@ export default function QuestionGenerator() {
               id="qg-class"
               value={className}
               onChange={(e) => setClassName(e.target.value)}
-              placeholder="Jaise: Class 10"
+              placeholder="e.g. Grade 10"
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
@@ -116,7 +118,7 @@ export default function QuestionGenerator() {
               id="qg-chapter"
               value={chapter}
               onChange={(e) => setChapter(e.target.value)}
-              placeholder="Jaise: Light — Reflection and Refraction"
+              placeholder="e.g. Light — Reflection and Refraction"
             />
           </div>
           <div className="space-y-2">
@@ -152,7 +154,7 @@ export default function QuestionGenerator() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Questions ban rahe hain…" : "Questions Banayein"}
+            {loading ? "Generating questions…" : "Generate Questions"}
           </Button>
         </div>
       </div>
@@ -161,7 +163,7 @@ export default function QuestionGenerator() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Subject aur chapter likhein — MCQs, short questions, long questions aur answer key ek hi paper mein mil jayega."
+        emptyHint="Pick a subject and chapter — you'll get MCQs, short and long questions with an answer key, all in one paper."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import { useAction, useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const list = (s: string) =>
   s
@@ -57,6 +58,7 @@ export default function StudyPlanner() {
 
   const run = async () => {
     if (!canGenerate || loading) return;
+    trackToolUsed("AI Study Planner");
     setLoading(true);
     setError(null);
     try {
@@ -71,11 +73,11 @@ export default function StudyPlanner() {
       setResult(res.text);
       toast.info(
         editingId
-          ? "Naya plan ready — Save dabane par existing plan update hoga."
-          : "Plan ready! Save karne ke liye 'Save Plan' dabayein.",
+          ? "New plan ready — saving will update the existing plan."
+          : "Plan ready! Tap 'Save Plan' to keep it.",
       );
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -97,10 +99,10 @@ export default function StudyPlanner() {
         strongSubjects: list(strong),
         plan: result,
       });
-      toast.success(editingId ? "Plan update ho gaya." : "Plan save ho gaya.");
+      toast.success(editingId ? "Plan updated." : "Plan saved.");
       setEditingId(null);
     } catch {
-      toast.error("Plan save nahi hua.");
+      toast.error("Couldn't save the plan.");
     }
   };
 
@@ -120,9 +122,9 @@ export default function StudyPlanner() {
     try {
       await deleteStudyPlan({ id });
       if (editingId === id) setEditingId(null);
-      toast.success("Plan delete ho gaya.");
+      toast.success("Plan deleted.");
     } catch {
-      toast.error("Delete nahi hua.");
+      toast.error("Couldn't delete.");
     }
   };
 
@@ -138,7 +140,7 @@ export default function StudyPlanner() {
               id="pl-course"
               value={course}
               onChange={(e) => setCourse(e.target.value)}
-              placeholder="Jaise: Class 10 CBSE / B.Sc 1st year"
+              placeholder="e.g. Grade 10 CBSE / B.Sc 1st year"
             />
           </div>
           <div className="space-y-2">
@@ -152,7 +154,7 @@ export default function StudyPlanner() {
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="pl-subjects">Subjects * (comma se alag karein)</Label>
+            <Label htmlFor="pl-subjects">Subjects * (comma separated)</Label>
             <Input
               id="pl-subjects"
               value={subjects}
@@ -177,7 +179,7 @@ export default function StudyPlanner() {
               id="pl-weak"
               value={weak}
               onChange={(e) => setWeak(e.target.value)}
-              placeholder="Jaise: Maths, Physics"
+              placeholder="e.g. Maths, Physics"
             />
           </div>
           <div className="space-y-2">
@@ -186,7 +188,7 @@ export default function StudyPlanner() {
               id="pl-strong"
               value={strong}
               onChange={(e) => setStrong(e.target.value)}
-              placeholder="Jaise: English"
+              placeholder="e.g. English"
             />
           </div>
         </div>
@@ -199,15 +201,15 @@ export default function StudyPlanner() {
           >
             <Sparkles className="size-4" />
             {loading
-              ? "Plan ban raha hai…"
+              ? "Creating your plan…"
               : editingId
                 ? "Regenerate"
-                : "Plan Banayein"}
+                : "Create Plan"}
           </Button>
         </div>
       </div>
 
-      {loading && <AiThinking label="ELVIX aapka schedule bana raha hai…" />}
+      {loading &&      <AiThinking label="ELVIX is building your schedule…" />}
       {error && <ErrorState message={error} onRetry={() => void run()} />}
 
       {result && !loading && (
@@ -242,7 +244,7 @@ export default function StudyPlanner() {
                 className="rounded-full text-muted-foreground"
                 onClick={() => setEditingId(null)}
               >
-                Naya plan
+                New plan
               </Button>
             )}
           </div>
@@ -255,8 +257,8 @@ export default function StudyPlanner() {
         {plans && plans.length === 0 && (
           <EmptyState
             icon={<Sparkles className="size-5" />}
-            title="Abhi koi saved plan nahi hai"
-            hint="Form bharke pehla plan banayein — yahan save hoke milega."
+            title="No saved plans yet"
+            hint="Fill the form to create your first plan — it will be saved here."
           />
         )}
         {plans?.map((plan) => (

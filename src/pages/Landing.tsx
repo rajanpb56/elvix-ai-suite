@@ -26,24 +26,24 @@ const FEATURES = [
   {
     icon: Zap,
     title: "Fast & Mobile-First",
-    desc: "Android pe jaisa native app feel — seedha browser mein, install bhi ho sakta hai.",
+    desc: "A native-app feel right in your browser — and installable as a PWA.",
   },
   {
     icon: ShieldCheck,
-    title: "Aapka data, aapke paas",
-    desc: "API keys sirf server par. Aapke chats aur results aapke device par safe.",
+    title: "Your data stays yours",
+    desc: "API keys stay on the server. Your chats and results stay safe on your device.",
   },
   {
     icon: Bot,
-    title: "Ek AI, sab kaam",
-    desc: "Chat, doubts, notes, PDFs, planner, scripts — sab ek hi ELVIX AI se.",
+    title: "One AI for everything",
+    desc: "Chat, doubts, notes, PDFs, planner, scripts — all from one ELVIX AI.",
   },
 ];
 
 const STEPS = [
-  { n: "1", title: "App kholein", desc: "Koi sign-up ya OTP nahi — seedha shuru." },
-  { n: "2", title: "Tool chunein", desc: "Padhai, content ya daily utilities — jo chahiye." },
-  { n: "3", title: "Result pao", desc: "Copy, save ya download — sab kuch ek tap mein." },
+  { n: "1", title: "Open the app", desc: "No sign-up or OTP — jump straight in." },
+  { n: "2", title: "Pick a tool", desc: "Study, content or daily utilities — whatever you need." },
+  { n: "3", title: "Get your result", desc: "Copy, save or download — all in one tap." },
 ];
 
 export default function Landing() {
@@ -60,12 +60,12 @@ export default function Landing() {
           <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
             <a href="#tools" className="hover:text-foreground">Tools</a>
             <a href="#features" className="hover:text-foreground">Features</a>
-            <a href="#how" className="hover:text-foreground">Kaise kaam karta hai</a>
+            <a href="#how" className="hover:text-foreground">How it works</a>
           </nav>
           <div className="flex items-center gap-2">
             <Button asChild className="bg-brand-gradient gap-2 rounded-full text-white shadow-md">
               <Link to={primaryCta}>
-                Free mein shuru karein
+                Get started free
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
@@ -100,15 +100,17 @@ export default function Landing() {
         <div className="mx-auto max-w-6xl px-4 pt-16 pb-14 text-center sm:pt-24 sm:pb-20">
           <div className="mx-auto mb-6 flex w-fit items-center gap-2 rounded-full border border-border/70 bg-card/60 px-4 py-1.5 text-xs font-medium text-muted-foreground">
             <Sparkles className="size-3.5 text-primary" />
-            Soch Se Solution Tak — AI ke saath
+            From idea to answer — with AI
           </div>
           <h1 className="font-display mx-auto max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
-            Har sawaal ka <span className="text-brand-gradient">solution</span>,
-            ek hi app mein
+            Every question has an{" "}
+            <span className="text-brand-gradient">answer</span> — one app for
+            them all
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
-            ELVIX aapka all-in-one AI platform hai — padhai, content creation
-            aur rozmarra ke kaam. Students, creators aur sab ke liye.
+            ELVIX is your all-in-one AI platform — for studying, content
+            creation and everyday tasks. Built for students, creators and
+            everyone in between.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button
@@ -117,18 +119,18 @@ export default function Landing() {
               className="bg-brand-gradient gap-2 rounded-full px-7 text-white shadow-lg"
             >
               <Link to={primaryCta}>
-                Free shuru karein
+                Start free
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="gap-2 rounded-full px-7">
-              <Link to="#tools" aria-label="Tools dekhein">
-                Tools dekhein
+              <Link to="#tools" aria-label="Explore the tools">
+                Explore tools
               </Link>
             </Button>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            No login · No OTP · Kholte hi shuru · Installable PWA
+            No login · No OTP · Start instantly · Installable PWA
           </p>
         </div>
       </section>
@@ -137,10 +139,10 @@ export default function Landing() {
       <section id="tools" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-14">
         <div className="mb-8 text-center">
           <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-            11 AI tools, ek jagah
+            11 AI tools, one place
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Har tool ka ek hi kaam — aur woh perfect tarike se.
+            Each tool does one job — and does it brilliantly.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -158,7 +160,7 @@ export default function Landing() {
               <p className="font-semibold">{tool.name}</p>
               <p className="mt-0.5 text-sm text-muted-foreground">{tool.blurb}</p>
               <span className="mt-2.5 inline-flex items-center gap-1 text-xs font-medium text-primary group-hover:underline">
-                Try karein <ArrowRight className="size-3" />
+                Try it <ArrowRight className="size-3" />
               </span>
             </Link>
           ))}
@@ -229,10 +231,10 @@ export default function Landing() {
         <div className="hero-glow glass ring-soft rounded-3xl px-6 py-12 text-center">
           <ElvixMark className="mx-auto size-14" />
           <h2 className="font-display mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-            Aaj se padhai aur content — dono easy
+            Studying and content — both made easy
           </h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-            ELVIX free hai. Koi login nahi — app kholein aur kaam shuru karein.
+            ELVIX is free. No login — open the app and get to work.
           </p>
           <Button
             asChild
@@ -240,7 +242,7 @@ export default function Landing() {
             className="bg-brand-gradient mt-6 gap-2 rounded-full px-7 text-white shadow-lg"
           >
             <Link to={primaryCta}>
-              ELVIX try karein — free
+              Try ELVIX — it's free
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -252,7 +254,7 @@ export default function Landing() {
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-4 text-center">
           <ElvixLogo tagline />
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} ELVIX · Madad chahiye?{" "}
+            © {new Date().getFullYear()} ELVIX · Questions?{" "}
             <a
               href="mailto:rajapbdb6699@gmail.com"
               className="text-primary underline underline-offset-2"
@@ -270,7 +272,7 @@ export default function Landing() {
           </p>
           <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
             <GraduationCap className="size-3.5" />
-            Made for Indian students & creators
+            Made for students & creators worldwide
           </p>
         </div>
       </footer>

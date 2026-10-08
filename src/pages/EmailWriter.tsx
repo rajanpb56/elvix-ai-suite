@@ -16,6 +16,7 @@ import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const TONES = ["Formal", "Friendly", "Persuasive", "Apologetic", "Follow-up"];
 
@@ -34,6 +35,7 @@ export default function EmailWriter() {
 
   const run = async () => {
     if (!purpose.trim() || loading) return;
+    trackToolUsed("Email Writer");
     setLoading(true);
     setError(null);
     try {
@@ -46,7 +48,7 @@ export default function EmailWriter() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -64,9 +66,9 @@ export default function EmailWriter() {
         content: result,
       });
       setSaved(true);
-      toast.success("Email history mein save ho gaya.");
+      toast.success("Email saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -77,12 +79,12 @@ export default function EmailWriter() {
       <div className="glass ring-soft space-y-4 rounded-3xl p-4 sm:p-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="ew-purpose">Email ka purpose *</Label>
+            <Label htmlFor="ew-purpose">Email purpose *</Label>
             <Input
               id="ew-purpose"
               value={purpose}
               onChange={(e) => setPurpose(e.target.value)}
-              placeholder="Jaise: Leave application / Complaint / College admission inquiry"
+              placeholder="e.g. Leave application / Complaint / College admission inquiry"
             />
           </div>
           <div className="space-y-2">
@@ -101,12 +103,12 @@ export default function EmailWriter() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="ew-recipient">Kis ko (optional)</Label>
+            <Label htmlFor="ew-recipient">Recipient (optional)</Label>
             <Input
               id="ew-recipient"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              placeholder="Jaise: Principal sir / HR manager"
+              placeholder="e.g. Principal / HR manager"
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
@@ -115,7 +117,7 @@ export default function EmailWriter() {
               id="ew-details"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
-              placeholder="Jo baatein email mein zaroor honi chahiye — ek line mein likh dein."
+              placeholder="Points that must appear in the email — one line is enough."
               className="min-h-20 resize-none"
             />
           </div>
@@ -128,7 +130,7 @@ export default function EmailWriter() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Email likha ja raha hai…" : "Email Banayein"}
+            {loading ? "Writing your email…" : "Create Email"}
           </Button>
         </div>
       </div>
@@ -137,7 +139,7 @@ export default function EmailWriter() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Purpose aur tone choose karein — subject line options aur ready-to-copy email body milegi."
+        emptyHint="Pick a purpose and tone — you'll get subject line options and a ready-to-copy email body."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

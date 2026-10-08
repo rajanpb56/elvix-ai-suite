@@ -51,7 +51,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
     howTo: [
       "Choose the subject — Physics, Chemistry, Mathematics, Biology, English or General.",
       "Type your doubt in the question box (you can attach an image for reference).",
-      "Tap Solve Karein and read the step-by-step solution.",
+      "Tap Solve and read the step-by-step solution.",
       "Use Explain More for a deeper explanation, or Make Exam Answer for an exam-ready version.",
     ],
     faq: [
@@ -83,7 +83,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Type the topic, e.g. Photosynthesis.",
       "Optionally add the chapter name or paste your own book text to base the notes on.",
       "Pick a notes type: Quick, Detailed, Revision or Exam.",
-      "Tap Notes Banayein, then copy, download or save the notes to History.",
+      "Tap Create Notes, then copy, download or save the notes to History.",
     ],
     faq: [
       {
@@ -113,7 +113,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
     howTo: [
       "Tap the upload area (or drag a file in) and choose your PDF — up to 10 MB.",
       "Choose the summary length: Short, Medium or Detailed.",
-      "Tap Summarize Karein and wait while the pages are read and summarised.",
+      "Tap Summarize and wait while the pages are read and summarised.",
       "Copy, download or save the summary to History when it's ready.",
     ],
     faq: [
@@ -145,7 +145,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Enter your class or course and your exam date.",
       "List your subjects (comma separated) and your daily available hours.",
       "Optionally add your weak and strong subjects so the plan balances them.",
-      "Tap Plan Banayein, then Save Plan to keep it — you can edit and regenerate anytime.",
+      "Tap Create Plan, then Save Plan to keep it — you can edit and regenerate anytime.",
     ],
     faq: [
       {
@@ -176,7 +176,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Pick the subject and optionally your class.",
       "Type the chapter name, e.g. Light — Reflection and Refraction.",
       "Choose the difficulty (Easy, Medium or Hard) and the number of questions (up to 30).",
-      "Tap Questions Banayein, then save, download or copy the paper with its answer key.",
+      "Tap Generate Questions, then save, download or copy the paper with its answer key.",
     ],
     faq: [
       {
@@ -207,7 +207,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Type your video topic, e.g. 5 facts about black holes.",
       "Choose the language (Hinglish, Hindi or English).",
       "Pick the duration — 15s, 30s, 45s or 60s — and the style: Facts, Educational, Suspense, Story or Fun.",
-      "Tap Script Banayein, then copy it and start filming.",
+      "Tap Create Script, then copy it and start filming.",
     ],
     faq: [
       {
@@ -238,7 +238,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Type your topic — study motivation, tech facts, cricket, anything.",
       "Choose the platform: YouTube Shorts, Instagram Reels or YouTube Long.",
       "Pick how many hooks you want (5, 10 or 15) and the language.",
-      "Tap Hooks Banayein and pick the hook that fits your video best.",
+      "Tap Generate Hooks and pick the hook that fits your video best.",
     ],
     faq: [
       {
@@ -268,7 +268,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
     howTo: [
       "Paste your long text into the box (up to 60,000 characters).",
       "Choose the summary length: Short, Medium or Detailed.",
-      "Tap Summarize Karein and wait a few seconds.",
+      "Tap Summarize and wait a few seconds.",
       "Copy, download or save the summary to History.",
     ],
     faq: [
@@ -300,7 +300,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Paste or type the text you want to translate.",
       "Choose the target language from the To list.",
       "Optionally set the From language, or leave Auto-detect on.",
-      "Tap Translate Karein and copy the translation.",
+      "Tap Translate and copy the translation.",
     ],
     faq: [
       {
@@ -331,7 +331,7 @@ export const SEO_CONTENT: Record<string, SeoContent> = {
       "Type the purpose of your email, e.g. leave application for two days.",
       "Pick a tone: Formal, Friendly, Persuasive, Apologetic or Follow-up.",
       "Optionally add the recipient and the key points that must be included.",
-      "Tap Email Banayein, then copy the subject and body and send it.",
+      "Tap Create Email, then copy the subject and body and send it.",
     ],
     faq: [
       {

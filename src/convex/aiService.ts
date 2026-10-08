@@ -30,7 +30,7 @@ function friendlyError(raw: string): { kind: "timeout" | "provider"; message: st
   if (lower.includes("abort") || lower.includes("timeout") || lower.includes("timed out")) {
     return {
       kind: "timeout",
-      message: "AI ne jawab dene mein zyada time le liya. Please try again.",
+      message: "The AI took too long to respond. Please try again.",
     };
   }
   if (
@@ -42,7 +42,7 @@ function friendlyError(raw: string): { kind: "timeout" | "provider"; message: st
   ) {
     return {
       kind: "provider",
-      message: "AI service ki limit reach ho gayi hai. Thodi der baad try karein.",
+      message: "The AI service has reached its limit. Please try again in a few minutes.",
     };
   }
   if (lower.includes("unauthorized") || lower.includes("401") || lower.includes("403")) {
@@ -53,7 +53,7 @@ function friendlyError(raw: string): { kind: "timeout" | "provider"; message: st
   }
   return {
     kind: "provider",
-    message: "AI service se connect nahi ho paya. Please try again in a moment.",
+    message: "Couldn't reach the AI service. Please try again in a moment.",
   };
 }
 
@@ -99,7 +99,7 @@ export async function runAI(
       return {
         ok: false,
         kind: "empty",
-        message: "AI ne khaali jawab diya. Please try again.",
+        message: "The AI returned an empty response. Please try again.",
       };
     }
 

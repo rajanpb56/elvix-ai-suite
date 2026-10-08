@@ -31,7 +31,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/ai-chat",
     category: "ai",
     icon: Bot,
-    blurb: "Kisi bhi sawaal ka jawab — padhai ya general, sab kuch.",
+    blurb: "Ask anything — studies, general knowledge or everyday questions.",
   },
   {
     id: "doubt-solver",
@@ -39,7 +39,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/ai-doubt-solver",
     category: "study",
     icon: GraduationCap,
-    blurb: "Step-by-step solution + exam-ready answer, subject ke hisaab se.",
+    blurb: "Step-by-step solutions and exam-ready answers, subject by subject.",
   },
   {
     id: "notes-maker",
@@ -47,7 +47,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/ai-notes-maker",
     category: "study",
     icon: NotebookPen,
-    blurb: "Topic se quick, detailed ya revision notes — copy & download ready.",
+    blurb: "Quick, detailed or revision notes from any topic — ready to copy and download.",
   },
   {
     id: "pdf-summarizer",
@@ -55,7 +55,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/pdf-summarizer",
     category: "study",
     icon: ScrollText,
-    blurb: "PDF upload karo — summary, key points aur revision milega.",
+    blurb: "Upload a PDF and get a summary, key points and quick revision.",
   },
   {
     id: "study-planner",
@@ -63,7 +63,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/ai-study-planner",
     category: "study",
     icon: CalendarDays,
-    blurb: "Exam date aur daily hours se realistic day-wise schedule.",
+    blurb: "A realistic day-wise schedule from your exam date and daily hours.",
   },
   {
     id: "question-generator",
@@ -71,7 +71,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/question-generator",
     category: "study",
     icon: FileQuestion,
-    blurb: "MCQs, short & long questions + answer key, chapter-wise.",
+    blurb: "MCQs, short and long questions with an answer key, chapter-wise.",
   },
   {
     id: "shorts-script",
@@ -79,7 +79,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/shorts-script",
     category: "creator",
     icon: Clapperboard,
-    blurb: "Hook se CTA tak — timestamped script captions ke saath.",
+    blurb: "From hook to CTA — a timestamped script with captions.",
   },
   {
     id: "hook-generator",
@@ -87,7 +87,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/hook-generator",
     category: "creator",
     icon: Lightbulb,
-    blurb: "Scroll-stopping hooks jo viewer ko 3 second mein pakad lein.",
+    blurb: "Scroll-stopping hooks that grab viewers in the first 3 seconds.",
   },
   {
     id: "text-summarizer",
@@ -95,7 +95,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/text-summarizer",
     category: "utilities",
     icon: FileText,
-    blurb: "Lambi article ya notes ko crisp summary mein badlein.",
+    blurb: "Turn long articles or notes into a crisp summary.",
   },
   {
     id: "translator",
@@ -103,7 +103,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/translator",
     category: "utilities",
     icon: Languages,
-    blurb: "Text ko kisi bhi language mein translate karein.",
+    blurb: "Translate text into any supported language.",
   },
   {
     id: "email-writer",
@@ -111,7 +111,7 @@ export const TOOLS: ToolDef[] = [
     path: "/app/email-writer",
     category: "utilities",
     icon: Mail,
-    blurb: "Professional email — subject line aur body ready-to-copy.",
+    blurb: "Professional emails — subject line and body, ready to copy.",
   },
 ];
 
@@ -124,9 +124,9 @@ export const CATEGORY_META: Record<
   { label: string; emoji: string; blurb: string }
 > = {
   study: { label: "Study", emoji: "🎓", blurb: "Doubts, notes, planner, questions" },
-  creator: { label: "Creator", emoji: "🎬", blurb: "Scripts aur hooks jo viral ho sakein" },
-  ai: { label: "AI", emoji: "🤖", blurb: "ELVIX AI se seedha baat karein" },
-  utilities: { label: "Utilities", emoji: "🛠", blurb: "Rozmarra ke kaam — fast aur clean" },
+  creator: { label: "Creator", emoji: "🎬", blurb: "Scripts and hooks built to go viral" },
+  ai: { label: "AI", emoji: "🤖", blurb: "Talk directly with ELVIX AI" },
+  utilities: { label: "Utilities", emoji: "🛠", blurb: "Everyday tasks — fast and clean" },
 };
 
 export function toolByPath(path: string): ToolDef | undefined {

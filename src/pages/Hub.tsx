@@ -19,7 +19,7 @@ export function Hub({ category }: { category: ToolCategory }) {
       {tools.length === 0 ? (
         <EmptyState
           icon={<span>{meta.emoji}</span>}
-          title="Is category mein abhi tools nahi hain"
+          title="No tools in this category yet"
         />
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">

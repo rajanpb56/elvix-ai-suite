@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useLocalName } from "@/hooks/use-local-name";
+import { trackToolUsed } from "@/lib/analytics";
 import {
   ArrowUp,
   Check,
@@ -33,10 +34,10 @@ import { useAction, useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
 
 const SUGGESTIONS = [
-  "Newton ke laws simple words mein samjhao",
-  "10th board exam ke liye 30 din ka plan banao",
-  "Instagram Reels ke liye 5 viral hooks do — space facts",
-  "Photosynthesis ko 5th class ke bacche ko samjhao",
+  "Explain Newton's laws in simple words",
+  "Make a 30-day study plan for my board exams",
+  "Give me 5 viral Instagram Reels hooks about space",
+  "Explain photosynthesis to a 5th grader",
 ];
 
 export default function Chat() {
@@ -86,6 +87,7 @@ export default function Chat() {
       setPendingUser(content);
       setSending(true);
       try {
+        trackToolUsed("AI Chat");
         const res = await sendChatMessage({
           chatId: chatId ?? undefined,
           message: content,
@@ -95,7 +97,7 @@ export default function Chat() {
         setError(
           e instanceof Error
             ? e.message
-            : "Kuch galat ho gaya. Dobara try karein.",
+            : "Something went wrong. Please try again.",
         );
       } finally {
         setPendingUser(null);
@@ -113,7 +115,9 @@ export default function Chat() {
       await regenerateResponse({ chatId });
     } catch (e) {
       setError(
-        e instanceof Error ? e.message : "Regenerate fail ho gaya. Try again.",
+        e instanceof Error
+          ? e.message
+          : "Regenerate failed. Please try again.",
       );
     } finally {
       setRegenerating(false);
@@ -127,9 +131,9 @@ export default function Chat() {
     setError(null);
     try {
       await deleteChat({ chatId: id });
-      toast.success("Chat clear ho gayi.");
+      toast.success("Chat cleared.");
     } catch {
-      toast.error("Chat clear nahi ho payi.");
+      toast.error("Couldn't clear the chat.");
     }
   }, [chatId, deleteChat]);
 
@@ -184,8 +188,8 @@ export default function Chat() {
             </h1>
             <p className="text-xs text-muted-foreground">
               {name
-                ? `Namaste, ${name.split(" ")[0]}!`
-                : "Aapka AI dost"}
+                ? `Hey ${name.split(" ")[0]}!`
+                : "Your AI companion"}
             </p>
           </div>
         </div>
@@ -200,7 +204,7 @@ export default function Chat() {
             >
               <SelectTrigger
                 className="h-9 w-32 rounded-full text-xs sm:w-48"
-                aria-label="Purani chat kholein"
+                aria-label="Open a previous chat"
               >
                 <SelectValue placeholder="History" />
               </SelectTrigger>
@@ -246,11 +250,11 @@ export default function Chat() {
             <div className="glass ring-soft flex flex-col items-center gap-2 rounded-3xl px-6 py-8">
               <ElvixMark className="size-14" />
               <p className="font-display text-base font-semibold">
-                ELVIX se kuch bhi poochein
+                Ask ELVIX anything
               </p>
               <p className="max-w-xs text-xs text-muted-foreground">
-                Padhai, general knowledge, ideas — jo bhi soch rahe ho, seedha
-                likh do.
+                Studies, general knowledge, ideas — type whatever is on your
+                mind.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-2">
@@ -315,8 +319,8 @@ export default function Chat() {
             <AiThinking
               label={
                 regenerating
-                  ? "Naya jawab ban raha hai…"
-                  : "ELVIX AI soch raha hai…"
+                  ? "Generating a new response…"
+                  : "ELVIX AI is thinking…"
               }
             />
           </div>
@@ -336,9 +340,9 @@ export default function Chat() {
                 void send(input);
               }
             }}
-            placeholder="ELVIX se poochein…"
+            placeholder="Ask ELVIX…"
             className="max-h-32 min-h-11 flex-1 resize-none border-0 bg-transparent px-2 py-2.5 text-sm shadow-none focus-visible:ring-0"
-            aria-label="Message likhein"
+            aria-label="Type a message"
             rows={1}
           />
           <Button
@@ -346,7 +350,7 @@ export default function Chat() {
             onClick={() => void send(input)}
             disabled={!input.trim() || busy}
             className="bg-brand-gradient size-10 shrink-0 rounded-full text-white shadow-md"
-            aria-label={busy ? "Chal raha hai" : "Bhejein"}
+            aria-label={busy ? "Working" : "Send"}
           >
             {busy ? (
               <Square className="size-4" />

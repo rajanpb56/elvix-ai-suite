@@ -15,6 +15,7 @@ import { FileText, RefreshCw, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const MAX_SIZE_MB = 10;
 const MAX_CHARS = 60000;
@@ -45,11 +46,11 @@ export default function PdfSummarizer() {
     const isPdf =
       f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
     if (!isPdf) {
-      toast.error("Sirf PDF file upload karein.");
+      toast.error("Please upload a PDF file only.");
       return;
     }
     if (f.size > MAX_SIZE_MB * 1024 * 1024) {
-      toast.error(`PDF ${MAX_SIZE_MB}MB se chhoti honi chahiye.`);
+      toast.error(`The PDF must be smaller than ${MAX_SIZE_MB} MB.`);
       return;
     }
     setFile(f);
@@ -79,6 +80,7 @@ export default function PdfSummarizer() {
 
   const run = async () => {
     if (!file || processing || progress !== null) return;
+    trackToolUsed("PDF Summarizer");
     setError(null);
     setResult(null);
     setSaved(false);
@@ -88,7 +90,7 @@ export default function PdfSummarizer() {
       setProgress(100);
       if (!text || text.length < 40) {
         throw new Error(
-          "Is PDF mein text nahi mila (ho sakta hai scanned images ho). Text-based PDF try karein.",
+          "No text found in this PDF (it may be scanned images). Please try a text-based PDF.",
         );
       }
       setProcessing(true);
@@ -99,7 +101,7 @@ export default function PdfSummarizer() {
       });
       setResult(res.text);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "PDF process nahi ho payi.";
+      const msg = e instanceof Error ? e.message : "Couldn't process the PDF.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setProcessing(false);
@@ -118,9 +120,9 @@ export default function PdfSummarizer() {
         content: result,
       });
       setSaved(true);
-      toast.success("Summary history mein save ho gayi.");
+      toast.success("Summary saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -140,10 +142,10 @@ export default function PdfSummarizer() {
           >
             <FileText className="size-8 text-muted-foreground" />
             <p className="text-sm font-medium">
-              PDF yahan tap karein ya drag karein
+              Tap to choose a PDF or drag it here
             </p>
             <p className="text-xs text-muted-foreground">
-              Max {MAX_SIZE_MB}MB · text-based PDF (scanned nahi)
+              Max {MAX_SIZE_MB} MB · text-based PDF (not scanned)
             </p>
             <input
               type="file"
@@ -169,8 +171,8 @@ export default function PdfSummarizer() {
               {progress !== null && (
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   {progress < 100
-                    ? `Padha ja raha hai… ${progress}%`
-                    : "Text extract ho gaya — AI summarize kar raha hai…"}
+                    ? `Reading… ${progress}%`
+                    : "Text extracted — AI is summarising…"}
                 </p>
               )}
             </div>
@@ -179,7 +181,7 @@ export default function PdfSummarizer() {
               variant="ghost"
               className="size-8 text-muted-foreground hover:text-destructive"
               onClick={() => pickFile(null)}
-              aria-label="File hatao"
+              aria-label="Remove file"
             >
               <X className="size-4" />
             </Button>
@@ -211,7 +213,7 @@ export default function PdfSummarizer() {
             ) : (
               <Sparkles className="size-4" />
             )}
-            {processing ? "Summarize ho raha hai…" : "Summarize Karein"}
+            {processing ? "Summarising…" : "Summarize"}
           </Button>
         </div>
       </div>
@@ -220,7 +222,7 @@ export default function PdfSummarizer() {
         loading={processing}
         error={error}
         result={result}
-        emptyHint="PDF upload karke Summarize dabayein — summary, key points, definitions, important questions aur quick revision milega."
+        emptyHint="Upload a PDF and tap Summarize — you'll get a summary, key points, definitions, important questions and quick revision."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

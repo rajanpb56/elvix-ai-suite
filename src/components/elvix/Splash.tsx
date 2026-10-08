@@ -46,7 +46,7 @@ export function Splash() {
           ELVI<span className="text-brand-gradient">X</span>
         </p>
         <p className="mt-1 text-xs font-medium tracking-[0.22em] text-muted-foreground uppercase">
-          Soch Se Solution Tak
+          From Idea To Answer
         </p>
       </div>
     </div>

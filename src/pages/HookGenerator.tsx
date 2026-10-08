@@ -15,6 +15,7 @@ import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const PLATFORMS = ["YouTube Shorts", "Instagram Reels", "YouTube Long"];
 const COUNTS = ["5", "10", "15"];
@@ -34,6 +35,7 @@ export default function HookGenerator() {
 
   const run = async () => {
     if (!topic.trim() || loading) return;
+    trackToolUsed("Hook Generator");
     setLoading(true);
     setError(null);
     try {
@@ -46,7 +48,7 @@ export default function HookGenerator() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -64,9 +66,9 @@ export default function HookGenerator() {
         content: `**Topic:** ${topic}\n**Platform:** ${platform}\n\n${result}`,
       });
       setSaved(true);
-      toast.success("Hooks history mein save ho gaye.");
+      toast.success("Hooks saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -81,7 +83,7 @@ export default function HookGenerator() {
             id="hg-topic"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            placeholder="Jaise: study motivation, tech facts, cricket"
+            placeholder="e.g. study motivation, tech facts, cricket"
           />
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
@@ -101,7 +103,7 @@ export default function HookGenerator() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Kitne hooks</Label>
+            <Label>How many hooks</Label>
             <Select value={count} onValueChange={setCount}>
               <SelectTrigger className="w-full rounded-xl">
                 <SelectValue />
@@ -139,7 +141,7 @@ export default function HookGenerator() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Hooks ban rahe hain…" : "Hooks Banayein"}
+            {loading ? "Generating hooks…" : "Generate Hooks"}
           </Button>
         </div>
       </div>
@@ -148,7 +150,7 @@ export default function HookGenerator() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Topic likhein — pehli 3 second mein viewer ko rok dene wale hooks, har ek ke saath 'why it works' note."
+        emptyHint="Enter a topic — hooks that stop viewers in the first 3 seconds, each with a 'why it works' note."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

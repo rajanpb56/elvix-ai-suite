@@ -88,7 +88,7 @@ export function ResultPanel({
     );
   }
   if (!result) {
-    return <EmptyState icon={<span>✨</span>} title="Result yahan aayega" hint={emptyHint} className={className} />;
+    return <EmptyState icon={<span>✨</span>} title="Your result will appear here" hint={emptyHint} className={className} />;
   }
 
   return (

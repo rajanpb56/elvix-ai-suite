@@ -27,7 +27,7 @@ export function ToolCard({ tool, className }: { tool: ToolDef; className?: strin
       <p className="font-semibold">{tool.name}</p>
       <p className="mt-0.5 text-sm text-muted-foreground">{tool.blurb}</p>
       <span className="mt-2 inline-block text-xs font-medium text-primary group-hover:underline">
-        Kholein →
+        Open →
       </span>
     </Link>
   );

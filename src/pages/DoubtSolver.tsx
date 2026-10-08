@@ -16,6 +16,7 @@ import { useRef, useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { useSearchParams } from "react-router";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const SUBJECTS = [
   "Physics",
@@ -45,6 +46,7 @@ export default function DoubtSolver() {
 
   const run = async (mode: "full" | "explain" | "exam") => {
     if (!question.trim() || loading) return;
+    trackToolUsed("AI Doubt Solver");
     setLoading(true);
     setError(null);
     if (mode === "full") setResult(null);
@@ -53,7 +55,7 @@ export default function DoubtSolver() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -71,9 +73,9 @@ export default function DoubtSolver() {
         content: `**Subject:** ${subject}\n\n**Question:** ${question}\n\n${result}`,
       });
       setSaved(true);
-      toast.success("History mein save ho gaya.");
+      toast.success("Saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -82,7 +84,7 @@ export default function DoubtSolver() {
     if (!f) return;
     setFileName(f.name);
     toast.info(
-      "Image ke andar ka text AI ko nahi dikhta abhi — question ka text yahan type karein, image reference ke liye attached rahegi.",
+      "AI can't read text inside images yet — type the question below; the image stays attached for reference.",
     );
   };
 
@@ -108,12 +110,12 @@ export default function DoubtSolver() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="doubt-question">Apna question likhein</Label>
+          <Label htmlFor="doubt-question">Type your question</Label>
           <Textarea
             id="doubt-question"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Jaise: Ek patthar 20 m/s se upar phenka gaya. Kitne second baad wapas throw point par aayega? (g = 10 m/s²)"
+            placeholder="e.g. A stone is thrown upward at 20 m/s. After how many seconds does it return to the throw point? (g = 10 m/s²)"
             className="min-h-28 resize-none"
           />
         </div>
@@ -135,7 +137,7 @@ export default function DoubtSolver() {
             onClick={() => fileRef.current?.click()}
           >
             <FileImage className="size-4" />
-            {fileName ? fileName.slice(0, 24) : "Image lagayein"}
+            {fileName ? fileName.slice(0, 24) : "Attach image"}
           </Button>
           <Button
             onClick={() => void run("full")}
@@ -143,7 +145,7 @@ export default function DoubtSolver() {
             className="bg-brand-gradient ml-auto gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Solve ho raha hai…" : "Solve Karein"}
+            {loading ? "Solving…" : "Solve"}
           </Button>
         </div>
       </div>
@@ -175,7 +177,7 @@ export default function DoubtSolver() {
         loading={loading && !result}
         error={error}
         result={result}
-        emptyHint="Question likhein aur ELVIX ko solve karne dein — final answer, steps, concept aur exam-ready answer sab milega."
+        emptyHint="Type your question and let ELVIX solve it — final answer, steps, concept and an exam-ready answer, all in one."
         onRetry={() => void run("full")}
         onRegenerate={() => void run("full")}
         onSave={handleSave}

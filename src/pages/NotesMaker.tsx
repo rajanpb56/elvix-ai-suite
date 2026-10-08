@@ -16,6 +16,7 @@ import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useAction, useMutation } from "convex/react";
 import { toast } from "sonner";
+import { trackToolUsed } from "@/lib/analytics";
 
 const STYLES = [
   { value: "quick", label: "Quick Notes" },
@@ -46,6 +47,7 @@ export default function NotesMaker() {
 
   const run = async () => {
     if (!topic.trim() || loading) return;
+    trackToolUsed("AI Notes Maker");
     setLoading(true);
     setError(null);
     try {
@@ -58,7 +60,7 @@ export default function NotesMaker() {
       setResult(res.text);
       setSaved(false);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Kuch galat ho gaya.";
+      const msg = e instanceof Error ? e.message : "Something went wrong.";
       setError(msg.includes("not configured") ? AI_CONFIG_MESSAGE : msg);
     } finally {
       setLoading(false);
@@ -76,9 +78,9 @@ export default function NotesMaker() {
         content: result,
       });
       setSaved(true);
-      toast.success("Notes history mein save ho gaye.");
+      toast.success("Notes saved to history.");
     } catch {
-      toast.error("Save nahi ho paya.");
+      toast.error("Couldn't save.");
     }
   };
 
@@ -94,7 +96,7 @@ export default function NotesMaker() {
               id="notes-topic"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              placeholder="Jaise: Photosynthesis"
+              placeholder="e.g. Photosynthesis"
             />
           </div>
           <div className="space-y-2">
@@ -103,18 +105,17 @@ export default function NotesMaker() {
               id="notes-chapter"
               value={chapter}
               onChange={(e) => setChapter(e.target.value)}
-              placeholder="Jaise: Life Processes — Ch 5"
+              placeholder="e.g. Life Processes — Ch 5"
             />
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="notes-text">Apna text (optional)</Label>
+        <div className="space-y-2">            <Label htmlFor="notes-text">Your text (optional)</Label>
           <Textarea
             id="notes-text"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Apne book ke notes ya paragraph paste karein — AI isi se notes banayega."
+            placeholder="Paste your book notes or a paragraph — the AI will build the notes from it."
             className="min-h-24 resize-none"
           />
         </div>
@@ -142,7 +143,7 @@ export default function NotesMaker() {
             className="bg-brand-gradient gap-2 rounded-full px-5 text-white shadow-md"
           >
             <Sparkles className="size-4" />
-            {loading ? "Notes ban rahe hain…" : "Notes Banayein"}
+            {loading ? "Creating notes…" : "Create Notes"}
           </Button>
         </div>
       </div>
@@ -151,7 +152,7 @@ export default function NotesMaker() {
         loading={loading}
         error={error}
         result={result}
-        emptyHint="Topic (aur chaaho to chapter/text) likhein — definition, concepts, examples, formulas aur important questions ke saath organized notes milenge."
+        emptyHint="Enter a topic (plus chapter or text if you like) — you'll get organised notes with definitions, concepts, examples, formulas and important questions."
         onRetry={() => void run()}
         onRegenerate={() => void run()}
         onSave={handleSave}

@@ -61,7 +61,7 @@ export function ResultActions({
         className="gap-1.5 rounded-full"
       >
         {copied ? <Check className="size-3.5 text-emerald-500" /> : <Copy className="size-3.5" />}
-        {copied ? "Copied" : "Copy Karein"}
+        {copied ? "Copied" : "Copy"}
       </Button>
       {onSave && (
         <Button
@@ -72,7 +72,7 @@ export function ResultActions({
           className="gap-1.5 rounded-full"
         >
           <Save className="size-3.5" />
-          {saved ? "Saved" : "Save Karein"}
+          {saved ? "Saved" : "Save"}
         </Button>
       )}
       {onRegenerate && (
@@ -84,7 +84,7 @@ export function ResultActions({
           className="gap-1.5 rounded-full"
         >
           <RotateCcw className="size-3.5" />
-          Phir Se Banayein
+          Regenerate
         </Button>
       )}
       {onClear && (
