@@ -1,5 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://elvix.freebuff.app/</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/ai-chat</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/ai-doubt-solver</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/ai-notes-maker</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/pdf-summarizer</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/ai-study-planner</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/question-generator</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/shorts-script</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/hook-generator</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/text-summarizer</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/translator</loc>
+    <lastmod>2026-10-06</lastmod>
+  </url>
+  <url>
+    <loc>https://elvix.freebuff.app/app/email-writer</loc>
+    <lastmod>2026-10-06</lastmod>
   </url>
 </urlset>

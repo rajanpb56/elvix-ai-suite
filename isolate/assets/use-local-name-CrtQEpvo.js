@@ -1,0 +1,1 @@
+import{a as r}from"./react-vendor-D5i4ccxH.js";const o="elvix:name";function c(){try{return localStorage.getItem(o)??""}catch{return""}}function l(e){try{const t=e.trim().slice(0,60);t?localStorage.setItem(o,t):localStorage.removeItem(o)}catch{}}function u(){const[e,t]=r.useState(()=>c()),[s,n]=r.useState(e),a=c();return a!==s&&(n(a),t(a)),[e,l]}export{l as s,u};
